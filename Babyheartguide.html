@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جمعية القلوب الصغيرة - دليل أولياء الأمور</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-bg {
+            background-color: #f0f5ff;
+            background-image: radial-gradient(#d6e4ff 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .section-title {
+            border-bottom: 3px solid #ef4444;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        .rtl-accordion-header::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+            position: absolute;
+            left: 1.5rem;
+            right: auto;
+        }
+        .rtl-accordion-header.active::after {
+            content: '-';
+        }
+        .modal-content h4 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #ef4444;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .modal-content p, .modal-content li {
+            margin-bottom: 1rem;
+        }
+        .modal-content ul {
+            list-style-type: disc;
+            padding-right: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header id="header" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#home" class="flex items-center space-x-2 rtl:space-x-reverse">
+                <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                <span class="text-2xl font-bold text-gray-800">القلوب الصغيرة</span>
+            </a>
+            <div class="hidden lg:flex items-center space-x-8 rtl:space-x-reverse">
+                <a href="#home" class="text-gray-600 hover:text-red-500 transition">الرئيسية</a>
+                <a href="#guide" class="text-gray-600 hover:text-red-500 transition">دليلك لقلب طفلك</a>
+                <a href="#dictionary" class="text-gray-600 hover:text-red-500 transition">قاموس المصطلحات</a>
+                <a href="#guides" class="text-gray-600 hover:text-red-500 transition">الأدلة الإرشادية</a>
+                <a href="#qa" class="text-gray-600 hover:text-red-500 transition">أسئلة وأجوبة</a>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden px-6 pt-2 pb-4">
+            <a href="#home" class="block py-2 text-gray-600 hover:text-red-500">الرئيسية</a>
+            <a href="#guide" class="block py-2 text-gray-600 hover:text-red-500">دليلك لقلب طفلك</a>
+            <a href="#dictionary" class="block py-2 text-gray-600 hover:text-red-500">قاموس المصطلحات</a>
+            <a href="#guides" class="block py-2 text-gray-600 hover:text-red-500">الأدلة الإرشادية</a>
+            <a href="#qa" class="block py-2 text-gray-600 hover:text-red-500">أسئلة وأجوبة</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="hero-bg pt-24 pb-16">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">جمعية الرعاية الصحية لأمراض القلب لدى الأطفال</h1>
+                <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-8">عزيزي الأب، عزيزتي الأم، ندرك أن رحلة علاج قلب طفلكم قد تكون مليئة بالتحديات والأسئلة. من أجلكم، أنشأنا هذا الدليل ليكون سندكم ومرجعكم الموثوق، حيث يوفر لكم كل المعلومات التي تحتاجونها في الوقت المناسب. هنا ستجدون شرحًا مبسطًا لحالة طفلكم في قسم 'دليلك لقلب طفلك'، وقاموسًا للمصطلحات الطبية، بالإضافة إلى أدلة إرشادية تفصيلية تغطي مراحل العلاج من العناية المركزة إلى التعافي في المنزل، وأجوبة على الأسئلة الأكثر شيوعًا.</p>
+                <div class="flex justify-center space-x-4 rtl:space-x-reverse">
+                    <a href="#guides" class="bg-red-500 text-white font-bold py-3 px-8 rounded-full hover:bg-red-600 transition duration-300">تصفح الأدلة</a>
+                    <a href="#contact" class="bg-white text-red-500 font-bold py-3 px-8 rounded-full border border-red-500 hover:bg-red-50 transition duration-300">تواصل معنا</a>
+                </div>
+            </div>
+            <div class="container mx-auto px-6 mt-16">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4 text-red-500">رؤيتنا</h3>
+                        <p class="text-gray-600">الريادة في تقديم الرعاية الطبية العلاجية للأطفال مرضى القلب.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4 text-red-500">رسالتنا</h3>
+                        <p class="text-gray-600">ممارسة أعلى المعايير الطبية في تقديم خدمات نوعية للأطفال مرضى القلب.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Your Guide to Your Child's Heart -->
+        <section id="guide" class="py-16">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title">دليلك لقلب طفلك</h2>
+                <div class="bg-white p-8 rounded-xl shadow-lg space-y-6">
+                    <h3 class="text-2xl font-bold text-red-500">مقدمة: أنتم لستم وحدكم</h3>
+                    <p>عندما يتم إخباركم بأن طفلكم يعاني من مرض في القلب، من الطبيعي أن تشعروا بالقلق والخوف والكثير من التساؤلات. هذا الدليل تم إعداده خصيصًا لكم، ليقدم لكم المعرفة والثقة التي تحتاجونها خلال هذه الرحلة. تذكروا دائمًا، أنتم أهم فرد في فريق رعاية طفلكم، ومعرفتكم هي أقوى أداة لدعمه.</p>
+                    
+                    <div class="border-t pt-6">
+                        <h4 class="text-xl font-bold mb-3">أشهر أنواع أمراض القلب الخلقية</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>عيوب تسبب زيادة تدفق الدم إلى الرئتين:</strong> مثل عيب الحاجز البطيني (VSD) والقناة الشريانية المفتوحة (PDA).</li>
+                            <li><strong>عيوب تسبب نقص تدفق الدم إلى الرئتين (وتؤدي إلى الزرقة):</strong> مثل رباعية فالو (TOF) ورتق الرئة.</li>
+                            <li><strong>عيوب تسبب انسدادًا في تدفق الدم من القلب:</strong> مثل تضيق الصمام الأورطي وتضيق الشريان الأورطي.</li>
+                        </ul>
+                    </div>
+
+                    <div class="border-t pt-6">
+                        <h4 class="text-xl font-bold mb-3">علامات وأعراض تستدعي الانتباه</h4>
+                        <p><strong>عند الرضع:</strong> صعوبة في الرضاعة، تعرق شديد، تنفس سريع، لون جلد شاحب أو مائل للزرقة، عدم زيادة الوزن.</p>
+                        <p><strong>عند الأطفال الأكبر سنًا:</strong> الشعور بالإرهاق بسرعة، صعوبة في التنفس، نوبات من الدوار أو الإغماء.</p>
+                    </div>
+                    
+                    <div class="border-t pt-6">
+                        <h4 class="text-xl font-bold mb-3">رحلة التشخيص والعلاج</h4>
+                        <p>تشمل الفحوصات تخطيط صدى القلب (الإيكو)، تخطيط القلب الكهربائي (ECG)، والأشعة السينية. قد تشمل الخطة العلاجية الأدوية أو الجراحة أو كليهما، مع رعاية فائقة في وحدة العناية المركزة القلبية بعد الجراحة.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dictionary Section -->
+        <section id="dictionary" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title">قاموس قلب طفلي: مصطلحات طبية مبسطة</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">ارتجاع / قصور (Regurgitation / Insufficiency)</h4><p class="text-gray-600">عندما لا يُغلَق الصمام القلبي بإحكام، فإنه يسمح للدم بالعودة إلى الخلف في الاتجاه الخاطئ. يمكن تشبيهه بباب لا يُغلَق جيدًا، مما يسبب تسريبًا.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">أذين (Atrium)</h4><p class="text-gray-600">القلب مقسم إلى أربع حجرات. الأذينان هما الحجرتان العلويتان اللتان تستقبلان الدم العائد إلى القلب.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">بطين (Ventricle)</h4><p class="text-gray-600">هما الحجرتان السفليتان القويتان في القلب، وظيفتهما ضخ الدم إلى الرئتين وبقية أجزاء الجسم.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">تخطيط صدى القلب (Echocardiogram / Echo)</h4><p class="text-gray-600">هو فحص آمن وغير مؤلم يستخدم الموجات فوق الصوتية (مثل السونار) لرسم صورة حية ومتحركة للقلب.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">تخطيط القلب الكهربائي (ECG / EKG)</h4><p class="text-gray-600">هو فحص بسيط يسجل النشاط الكهربائي للقلب.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">تضيق (Stenosis)</h4><p class="text-gray-600">هو مصطلح يعني أن صمامًا أو وعاءً دمويًا أضيق من الطبيعي. هذا التضيق يجعل من الصعب على الدم أن يتدفق عبره.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">تحويلة دموية (Shunt)</h4><p class="text-gray-600">هي مسار غير طبيعي لتدفق الدم بين حجرات القلب أو الأوعية الدموية الكبرى.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">جراحة تلطيفية (Palliative Surgery)</h4><p class="text-gray-600">هي جراحة لا تصلح الخلل القلبي بشكل كامل، ولكنها تهدف إلى تحسين تدفق الدم وتخفيف الأعراض.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">جهاز القلب والرئة الصناعي</h4><p class="text-gray-600">هو جهاز يتولى وظيفة القلب والرئتين مؤقتًا أثناء جراحة القلب المفتوح.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">الزرقة (Cyanosis)</h4><p class="text-gray-600">هي ظهور لون أزرق أو رمادي على الجلد، خاصة حول الشفاه وفي أطراف الأصابع، بسبب نقص الأكسجين في الدم.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">القسطرة القلبية (Cardiac Catheterization)</h4><p class="text-gray-600">هو إجراء يتم فيه إدخال أنبوب رفيع ومرن عبر وعاء دموي للوصول إلى القلب للتشخيص أو العلاج.</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md"><h4 class="font-bold text-lg text-red-500 mb-2">نقص التنسج / عدم اكتمال النمو (Hypoplasia)</h4><p class="text-gray-600">هو مصطلح يعني أن جزءًا من القلب، مثل أحد البطينات أو الصمامات، لم ينمُ بشكل كامل وهو أصغر من الحجم الطبيعي.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guides Section -->
+        <section id="guides" class="py-16">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title">الأدلة الإرشادية التفصيلية</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"><div class="p-6 flex-grow"><h3 class="font-bold text-xl mb-3">دليل الآباء والأمهات: رحلة أصحاب البطين الواحد</h3><p class="text-gray-600">فهم ودعم مسار العلاج الجراحي لطفلك عبر المراحل الثلاث: نوروود، غلين، وفونتان.</p></div><div class="p-6 bg-gray-50"><button onclick="showModal('modal-parents')" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-full hover:bg-red-600 transition">اقرأ المزيد</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"><div class="p-6 flex-grow"><h3 class="font-bold text-xl mb-3">دليل العناية المركزة القلبية للأطفال</h3><p class="text-gray-600">ما الذي تتوقعه بجانب سرير طفلك؟ فهم الأجهزة، فريق الرعاية، ودوركم كآباء.</p></div><div class="p-6 bg-gray-50"><button onclick="showModal('modal-icu')" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-full hover:bg-red-600 transition">اقرأ المزيد</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"><div class="p-6 flex-grow"><h3 class="font-bold text-xl mb-3">دليل فترة التعافي بعد جراحة القلب</h3><p class="text-gray-600">فهم المضاعفات المحتملة مثل متلازمة ما بعد فتح التامور والانصباب الكيلوسي.</p></div><div class="p-6 bg-gray-50"><button onclick="showModal('modal-recovery')" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-full hover:bg-red-600 transition">اقرأ المزيد</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"><div class="p-6 flex-grow"><h3 class="font-bold text-xl mb-3">دليل أدوية قلب طفلك</h3><p class="text-gray-600">شرح مبسط للأدوية الشائعة مثل مدرات البول، موسعات الأوعية، وأدوية السيولة.</p></div><div class="p-6 bg-gray-50"><button onclick="showModal('modal-meds')" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-full hover:bg-red-600 transition">اقرأ المزيد</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"><div class="p-6 flex-grow"><h3 class="font-bold text-xl mb-3">التغذية وصحة القلب</h3><p class="text-gray-600">دليل تغذية الأطفال المصابين بأمراض القلب، وفهم تحديات الرضاعة والحلول المتاحة.</p></div><div class="p-6 bg-gray-50"><button onclick="showModal('modal-nutrition')" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-full hover:bg-red-600 transition">اقرأ المزيد</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"><div class="p-6 flex-grow"><h3 class="font-bold text-xl mb-3">مفكرة وقائمة مهام للوالدين</h3><p class="text-gray-600">خطوات واثقة في رحلة علاج طفلكم مع قوائم تحقق لما قبل وبعد الجراحة.</p></div><div class="p-6 bg-gray-50"><button onclick="showModal('modal-checklist')" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-full hover:bg-red-600 transition">اقرأ المزيد</button></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Q&A Section -->
+        <section id="qa" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title">أسئلة وأجوبة شائعة</h2>
+                <div class="max-w-4xl mx-auto space-y-4" id="accordion-container">
+                    <!-- Q&A items will be populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <footer id="contact" class="bg-gray-800 text-white pt-16 pb-8">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-4">تواصلوا معنا</h2>
+                <p class="max-w-lg mx-auto mb-8">نحن هنا لدعمكم في كل خطوة. لا تترددوا في التواصل معنا لأي استفسار.</p>
+                <div class="text-lg">
+                    <p><strong>البريد الإلكتروني:</strong> info@littlehearts.org.sa</p>
+                    <p><strong>رقم التواصل:</strong> 0556922929</p>
+                </div>
+                <div class="mt-8 border-t border-gray-700 pt-8">
+                    <p>&copy; 2025 جمعية القلوب الصغيرة. جميع الحقوق محفوظة.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Modals for Guides -->
+    <div id="modal-parents" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4" onclick="closeAllModals()">
+        <div class="bg-white rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold">دليل الآباء والأمهات: رحلة أصحاب البطين الواحد</h3>
+                <button onclick="closeAllModals()" class="text-2xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <div class="p-6 modal-content">
+                <h4>مقدمة: بداية الرحلة</h4>
+                <p>عندما تسمعون عبارة "بطين واحد" لوصف حالة قلب طفلكم، من الطبيعي أن تشعروا بمزيج من القلق والارتباك. هذا الدليل هو خطوتكم الأولى نحو فهم حالة طفلكم، وهو مصمم ليكون خارطة طريق تشرح لكم المسار العلاجي الذي سيسير فيه طفلكم خطوة بخطوة. تذكروا دائمًا أن الطب قد قطع شوطًا هائلاً، وأن هذا المسار الجراحي يهدف إلى منح طفلكم أفضل فرصة لحياة صحية ونشطة. أنتم أهم شريك في هذه الرحلة.</p>
+                <h4>1. ما هو "البطين الواحد"؟ شرح مبسط للمفهوم</h4>
+                <p>القلب الطبيعي يحتوي على حجرتين قويتين للضخ تُسميان "البطينين". أحدهما (الأيمن) يضخ الدم إلى الرئتين ليحصل على الأكسجين، والآخر (الأيسر) يضخ الدم الغني بالأكسجين إلى جميع أنحاء الجسم. في حالة "البطين الواحد"، يكون أحد هذين البطينين إما صغيرًا جدًا أو غير مكتمل النمو، مما يجعل بطينًا واحدًا فقط هو الذي يقوم بكل هذا العمل الشاق بمفرده. هذا يعني أن الدم الغني بالأكسجين القادم من الرئتين يختلط مع الدم الفقير بالأكسجين العائد من الجسم داخل هذا البطين الوحيد. تشمل هذه الحالة مجموعة من أمراض القلب المعقدة، مثل: متلازمة القلب الأيسر الناقص التنسج (HLHS)، رتق الصمام ثلاثي الشرفات (Tricuspid Atresia)، وبعض الحالات المعقدة من عيوب الحاجز الأذيني البطيني.</p>
+                <h4>2. لماذا نحتاج إلى ثلاث جراحات؟ فهم استراتيجية المراحل</h4>
+                <p>قد تتساءلون، لماذا لا يمكن إجراء جراحة واحدة لإصلاح كل شيء؟ الجواب هو أن قلب ورئتي الطفل حديث الولادة لا يستطيعان تحمل التغيير الكبير والمفاجئ الذي يتطلبه الإصلاح النهائي. لذلك، ابتكر الجراحون مسارًا علاجيًا ذكيًا من ثلاث مراحل جراحية، يتم إجراؤها على فترات متباعدة خلال السنوات الأولى من عمر الطفل. هذه الاستراتيجية تسمح لقلب الطفل وجسمه بالتكيف والنمو تدريجيًا مع كل تغيير جديد في الدورة الدموية.</p>
+                <h4>3. المرحلة الأولى: تأسيس التوازن في الأيام الأولى من الحياة</h4>
+                <p>تُجرى هذه الجراحة عادة خلال الأسبوع الأول أو الثاني من عمر الطفل. الهدف الرئيسي هو جعل البطين الواحد القوي مسؤولاً عن ضخ الدم إلى الجسم، وفي نفس الوقت، إنشاء مسار دموي مستقر وآمن إلى الرئتين. هناك طريقتان شائعتان لتحقيق ذلك: عملية نوروود (Norwood Procedure) أو التحويلة الجهازية الرئوية (Systemic-to-Pulmonary Shunt). من الطبيعي والمُتوقع أن تكون نسبة الأكسجين في دم طفلكم حوالي 75-85% بعد هذه المرحلة.</p>
+                <h4>4. المرحلة الثانية: عملية "غلين" (بين 3 و 6 أشهر)</h4>
+                <p>الهدف الرئيسي هو تخفيف العبء عن البطين الواحد. يقوم الجراح بفصل الوريد الرئيسي القادم من الجزء العلوي من الجسم (الرأس والذراعين) وتوصيله مباشرة بالشريان الرئوي. هذا يعني أن الدم الفقير بالأكسجين من الجزء العلوي للجسم سيتدفق إلى الرئتين بشكل طبيعي وبدون الحاجة إلى أن يضخه القلب. ستبقى نسبة الأكسجين في دم طفلكم في نطاق 75-85%.</p>
+                <h4>5. المرحلة الثالثة: عملية "فونتان" (بين 2 و 4 سنوات)</h4>
+                <p>الهدف الرئيسي هو استكمال فصل الدورتين الدموية. يقوم الجراح بتوجيه الدم العائد من الجزء السفلي من الجسم إلى الشريان الرئوي مباشرة. بهذا الإجراء، يصبح كل الدم الفقير بالأكسجين يذهب إلى الرئتين مباشرةً، بينما يتلقى البطين الوحيد الدم الغني بالأكسجين فقط ليضخه إلى الجسم. بعد هذه العملية، يجب أن ترتفع نسبة الأكسجين في دم طفلكم إلى مستويات شبه طبيعية (فوق 90%).</p>
+                <h4>6. الحياة بعد "فونتان": المتابعة والتحديات المحتملة</h4>
+                <p>بعد استكمال مسار الجراحات الثلاث، يمكن لمعظم الأطفال أن يعيشوا حياة نشطة ومُرضية. ومع ذلك، من المهم فهم أن الدورة الدموية لديهم تظل فريدة وتتطلب متابعة مدى الحياة مع طبيب قلب متخصص. قد يحتاج طفلكم إلى تناول بعض الأدوية، مثل مسيلات الدم. الفريق الطبي على دراية بالتحديات المحتملة ويعمل على مراقبتها والتعامل معها مبكرًا.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-icu" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4" onclick="closeAllModals()">
+        <div class="bg-white rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold">دليل العناية المركزة القلبية للأطفال</h3>
+                <button onclick="closeAllModals()" class="text-2xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <div class="p-6 modal-content">
+                <h4>مقدمة: خطوة إلى عالم جديد</h4>
+                <p>عندما يدخل طفلك إلى وحدة العناية المركزة القلبية (CICU) لأول مرة، قد تشعر بأنك دخلت عالمًا غريبًا مليئًا بالأجهزة والأصوات غير المألوفة. هذا الشعور طبيعي تمامًا. هذا الدليل هو بوابتك لفهم هذا العالم، وهو مصمم ليمنحك الطمأنينة من خلال المعرفة، وليوضح لك أن كل جهاز وصوت له هدف واحد فقط: رعاية طفلك بأفضل شكل ممكن.</p>
+                <h4>1. فهم الأجهزة: نافذتك على صحة طفلك</h4>
+                <ul>
+                    <li><strong>شاشة المراقبة (المونيتور):</strong> تراقب باستمرار تخطيط القلب الكهربائي (ECG)، نسبة الأكسجين (Pulse Oximeter)، وقياس ضغط الدم.</li>
+                    <li><strong>أنبوب الضغط الشرياني (Arterial Line):</strong> يسمح بقياس ضغط الدم بشكل مباشر ودقيق مع كل نبضة قلب، ويتيح سحب عينات الدم للفحوصات دون الحاجة إلى وخز طفلك بشكل متكرر.</li>
+                    <li><strong>جهاز التنفس الصناعي (Ventilator):</strong> يقوم بتوصيل الأكسجين إلى رئتي طفلك من خلال أنبوب تنفسي. إنه يمنح جسم طفلك فرصة للراحة والتركيز على الشفاء.</li>
+                    <li><strong>المضخات الوريدية (IV Pumps):</strong> ضرورية لإعطاء طفلك الأدوية والسوائل والتغذية بجرعات دقيقة جدًا وبشكل مستمر.</li>
+                    <li><strong>أنابيب الصدر (Chest Tubes):</strong> بعد جراحة القلب، يتم وضع هذه الأنابيب لتصريف أي سوائل أو هواء زائد حول القلب والرئتين.</li>
+                    <li><strong>أسلاك تنظيم ضربات القلب المؤقتة (Pacing Wires):</strong> إذا كان نبض قلب طفلك بطيئًا جدًا بعد الجراحة، يمكن استخدام هذه الأسلاك لتنظيم ضرباته بشكل مؤقت.</li>
+                </ul>
+                <h4>2. فريق الرعاية: من هم الأشخاص الذين يعتنون بطفلك؟</h4>
+                <p>طفلك محاط بفريق من الخبراء الذين يعملون معًا كخلية نحل. أهم أعضاء هذا الفريق هم: طبيب العناية المركزة (Intensivist)، ممرضة العناية المركزة القلبية، أخصائي العلاج التنفسي، بالإضافة إلى جراحي القلب، أطباء القلب، الصيادلة، أخصائيي التغذية، والأخصائيين الاجتماعيين.</p>
+                <h4>3. الروتين اليومي في الوحدة: ما الذي يحدث كل يوم؟</h4>
+                <p>في كل صباح، يجتمع الفريق الطبي بأكمله عند سرير طفلك لمناقشة حالته ووضع خطة الرعاية (جولات الأطباء). كما يتم تغيير ورديات التمريض وإجراء فحوصات يومية لمتابعة تقدم حالة طفلك.</p>
+                <h4>4. دوركم كأبطال: كيف يمكنكم المساعدة؟</h4>
+                <p>قد تشعر بالعجز، لكن دورك هو الأهم. صوتك ولمستك هما أفضل مهدئ لطفلك. وجودك بجانبه يمنحه شعورًا بالأمان. دونوا أسئلتكم وتحدثوا مع الممرضة والطبيب. والأهم من ذلك، اعتنوا بأنفسكم، فطفلكم يحتاج إليكم بكامل قوتكم.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="modal-recovery" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4" onclick="closeAllModals()">
+        <div class="bg-white rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold">دليل فترة التعافي بعد جراحة القلب</h3>
+                <button onclick="closeAllModals()" class="text-2xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <div class="p-6 modal-content">
+                <h4>مقدمة: رحلة التعافي خطوة بخطوة</h4>
+                <p>أهلاً بكم في هذه المرحلة الهامة من رحلة طفلكم. إن نجاح جراحة القلب هو خطوة عظيمة، والآن تبدأ مرحلة التعافي التي لا تقل أهمية. يهدف هذا الدليل إلى تزويدكم بمعلومات مبسطة وواضحة حول بعض الحالات الشائعة التي قد تواجه طفلكم خلال فترة التعافي.</p>
+                <h4>1. متلازمة ما بعد فتح التامور (Post-pericardiotomy Syndrome)</h4>
+                <p>هي رد فعل التهابي بسيط يحدث في غشاء التامور المحيط بالقلب. تعتبر هذه الحالة شائعة نسبيًا وتظهر أعراضها (ارتفاع الحرارة وألم في الصدر) بعد أسبوع إلى ستة أسابيع من الجراحة. العلاج بسيط وفعّال، وعادةً ما يتم وصف أدوية مضادة للالتهابات.</p>
+                <h4>2. الانصباب الكيلوسي (Chylothorax) - تسرب السائل الليمفاوي</h4>
+                <p>هو حالة تحدث عندما يتسرب سائل حليبي غني بالدهون يسمى "الكيلوس" إلى التجويف الصدري. يحدث بسبب إصابة غير مقصودة للقناة الصدرية أثناء الجراحة. خطة العلاج تهدف لتقليل إنتاج هذا السائل عبر حمية غذائية خاصة (حليب بدهون MCT) أو التغذية الوريدية. في حالات نادرة، قد تكون هناك حاجة لتدخل جراحي.</p>
+                <h4>3. ضعف أو شلل العصب الحجابي (Diaphragmatic Palsy)</h4>
+                <p>هو العصب الذي يتحكم في حركة الحجاب الحاجز (عضلة التنفس). قد يتأثر أحيانًا أثناء الجراحة، مما يؤدي إلى صعوبة في التنفس. في كثير من الحالات، يكون الضعف مؤقتًا ويتعافى العصب من تلقاء نفسه. إذا لم يتحسن الوضع، يمكن للجراح إجراء عملية بسيطة لشدّ الجزء الضعيف من الحجاب الحاجز.</p>
+                <h4>4. اضطرابات النظم القلبي المؤقتة (Temporary Arrhythmias)</h4>
+                <p>من الشائع جدًا حدوث بعض الاضطرابات المؤقتة في نظم القلب بعد الجراحة. القلب يكون في مرحلة "التعافي". يتم مراقبة نظم قلب طفلك بشكل مستمر، وتصحيح أي تغيرات في أملاح الدم. بعض الحالات قد تحتاج إلى دواء مؤقت أو استخدام منظم ضربات القلب المؤقت (الأسلاك الصغيرة على صدر الطفل).</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-meds" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4" onclick="closeAllModals()">
+        <div class="bg-white rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold">دليل أدوية قلب طفلك</h3>
+                <button onclick="closeAllModals()" class="text-2xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <div class="p-6 modal-content">
+                <h4>مقدمة: دواء طفلك، جزء من رعايتك</h4>
+                <p>نعلم أن قائمة الأدوية التي يحتاجها طفلك قد تبدو مربكة. هذا الدليل مصمم ليكون مرجعك البسيط. يقوم الفريق الطبي بحساب جرعات طفلك بدقة متناهية بناءً على وزنه وعمره وحالته الصحية، فلا يجب أبدًا مقارنتها بجرعات البالغين.</p>
+                <h4>1. مدرات البول (Diuretics)</h4>
+                <p>تُعرف بـ "حبوب الماء"، وتعمل على مساعدة الكلى للتخلص من الملح والماء الزائدين عن حاجة الجسم عن طريق البول. هذا يخفف العبء على القلب ويسهل عملية التنفس. أمثلة شائعة: فوروسيميد (لازيكس)، سبيرونولاكتون.</p>
+                <h4>2. موسعات الأوعية الدموية (Vasodilators)</h4>
+                <p>تعمل هذه الأدوية على إرخاء وتوسيع الأوعية الدموية في الجسم. عندما تتوسع الأوعية، تقل المقاومة التي يواجهها القلب عند ضخ الدم، مما يجعل مهمته أسهل. أمثلة شائعة: كابتوبريل، إنالابريل.</p>
+                <h4>3. الأدوية الداعمة لعضلة القلب (Inotropes)</h4>
+                <p>في بعض الحالات، خاصة بعد الجراحة، قد تحتاج عضلة القلب إلى دعم إضافي لتقوية انقباضاتها. تُعطى هذه الأدوية عادةً عن طريق الوريد في المستشفى تحت مراقبة دقيقة. أمثلة شائعة: دوبامين، ميلرينون.</p>
+                <h4>4. أدوية السيولة (Anticoagulants / Antiplatelets)</h4>
+                <p>تُستخدم هذه الأدوية لمنع تكون الجلطات الدموية غير المرغوب فيها. تتطلب هذه الأدوية متابعة دقيقة من خلال تحاليل الدم لضمان أن سيولة الدم ضمن المعدل الآمن والمطلوب. أمثلة شائعة: وارفارين (كومادين)، هيبارين، أسبرين.</p>
+                <h4>نصائح عملية هامة للآباء والأمهات</h4>
+                <ul>
+                    <li><strong>الالتزام بالجرعات والمواعيد:</strong> أعطِ الدواء لطفلك تمامًا كما وصفه الطبيب.</li>
+                    <li><strong>استخدام الأداة الصحيحة:</strong> استخدم دائمًا أداة القياس التي يوفرها الصيدلي.</li>
+                    <li><strong>ماذا تفعل إذا نسيت جرعة؟</strong> القاعدة العامة: إذا تذكرت خلال ساعات قليلة، أعطها. إذا اقترب موعد الجرعة التالية، فتجاوز الفائتة. لا تعطِ جرعة مضاعفة أبدًا.</li>
+                    <li><strong>راقب الأعراض الجانبية:</strong> انتبه لأي تغيرات غير طبيعية وأبلغ الطبيب بها.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-nutrition" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4" onclick="closeAllModals()">
+        <div class="bg-white rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold">التغذية وصحة القلب</h3>
+                <button onclick="closeAllModals()" class="text-2xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <div class="p-6 modal-content">
+                <h4>مقدمة: غذاء القلب الصغير</h4>
+                <p>عندما يكون لدى الطفل مرض في القلب، قد تصبح عملية التغذية تحديًا إضافيًا. هذا الدليل مصمم لمساعدتكم على فهم سبب هذه التحديات، والحلول التي يقدمها الفريق الطبي لضمان حصول طفلكم على كل ما يحتاجه لينمو ويزدهر.</p>
+                <h4>لماذا يواجه طفلي صعوبة في الرضاعة؟</h4>
+                <p>قد تلاحظون أن طفلكم يتعب بسرعة أثناء الرضاعة، أو يتنفس بشكل سريع، أو يتعرق. هذا أمر شائع جدًا والسبب بسيط: قلبه يعمل بجهد إضافي. هذا الجهد الكبير يستهلك الكثير من السعرات الحرارية ويسبب الإرهاق.</p>
+                <h4>كيف نضمن حصول طفلي على سعرات حرارية كافية؟</h4>
+                <p>بما أن طفلكم قد لا يتمكن من تناول كميات كبيرة، فإن الهدف هو جعل كل مليلتر يتناوله غنيًا بالطاقة. سيقوم الفريق الطبي بوضع خطة لزيادة السعرات الحرارية، والتي قد تشمل تدعيم الحليب بمساحيق خاصة أو استخدام حليب صناعي عالي السعرات. من المهم جدًا اتباع توصيات الفريق الطبي بدقة.</p>
+                <h4>التغذية عن طريق الأنبوب: متى ولماذا؟</h4>
+                <p>عندما يكون الطفل متعبًا جدًا بحيث لا يستطيع تناول كفايته من الطعام عن طريق الفم، قد تكون التغذية عن طريق الأنبوب هي الحل الأفضل. إنها ليست علامة على الفشل، بل هي أداة لدعم طفلك ومساعدته على النمو بقوة. يتم إدخال أنبوب ناعم ومرن من الأنف ليصل إلى الجهاز الهضمي.</p>
+                <h4>التغذية الوريدية (PN): دعم مؤقت للشفاء</h4>
+                <p>في بعض الحالات الحرجة، خاصة بعد العمليات الجراحية الكبرى، قد يحتاج الجهاز الهضمي لطفلك إلى فترة من الراحة الكاملة. في هذه الحالة، يتم اللجوء إلى التغذية الوريدية، وهي محلول غذائي متكامل يتم إعطاؤه مباشرة في مجرى الدم. التغذية الوريدية هي حل مؤقت، والهدف دائمًا هو العودة إلى التغذية العادية.</p>
+                <h4>مشاكل الجهاز الهضمي التي يجب معرفتها</h4>
+                <p>الأطفال المصابون بأمراض قلبية حرجة يكونون أكثر عرضة لالتهاب الأمعاء والقولون الناخر (NEC). هذا هو السبب الرئيسي الذي يجعل الفريق الطبي حذرًا جدًا عند بدء التغذية لطفلك، حيث تتم زيادتها ببطء شديد لمراقبة مدى تحمل الأمعاء.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-checklist" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4" onclick="closeAllModals()">
+        <div class="bg-white rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold">مفكرة وقائمة مهام للوالدين</h3>
+                <button onclick="closeAllModals()" class="text-2xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <div class="p-6 modal-content">
+                <h4>مقدمة:</h4>
+                <p>هذه المفكرة هي مساحتكم الخاصة لتنظيم المعلومات، تدوين الملاحظات، وتذكر التفاصيل الهامة في رحلة علاج طفلكم. استخدامها سيساعدكم على الشعور بمزيد من السيطرة والثقة.</p>
+                <h4>الجزء الأول: قائمة تحقق ما قبل الجراحة</h4>
+                <p><strong>أولاً: أسئلة مهمة لطرحها على الفريق الطبي:</strong></p>
+                <ul>
+                    <li>ما هو التشخيص الدقيق لحالة طفلي؟ وماذا يعني ذلك بلغة مبسطة؟</li>
+                    <li>ما هو الهدف الرئيسي من هذه الجراحة؟ (إصلاح كامل أم مرحلة أولى؟)</li>
+                    <li>كم من الوقت من المتوقع أن تستغرق الجراحة؟</li>
+                    <li>ما هي المخاطر المحتملة للجراحة؟ وما هي نسبة نجاحها؟</li>
+                    <li>كم من الوقت سيبقى طفلي في وحدة العناية المركزة القلبية؟</li>
+                    <li>ما هو شكل طفلي المتوقع عند خروجه من الجراحة؟ (الأجهزة، الأنابيب، إلخ).</li>
+                </ul>
+                <p><strong>ثانياً: قائمة الأشياء التي يجب إحضارها للمستشفى:</strong></p>
+                <ul>
+                    <li><strong>لطفلك:</strong> لعبة أو بطانية مألوفة، ملابس مريحة بأزرار أمامية، اللهاية الخاصة به.</li>
+                    <li><strong>لك كأب/أم:</strong> ملابس مريحة، شاحن الهاتف، دفتر ملاحظات وقلم، وجبات خفيفة، جميع الوثائق المهمة.</li>
+                </ul>
+                <h4>الجزء الثاني: قائمة تحقق لما بعد الخروج من المستشفى</h4>
+                <p><strong>أولاً: تنظيم المتابعة الطبية:</strong></p>
+                <ul>
+                    <li>تسجيل موعد المتابعة الأول مع طبيب القلب.</li>
+                    <li>تسجيل موعد المتابعة مع الجراح.</li>
+                    <li>تدوين أسماء الأطباء وأرقام هواتف العيادات.</li>
+                </ul>
+                <p><strong>ثانياً: جدول الأدوية:</strong></p>
+                <p>تأكد من فهم وظيفة كل دواء وكيفية قياس الجرعة بدقة. ضع منبهات لتذكيرك بالمواعيد.</p>
+                <p><strong>ثالثاً: أرقام الطوارئ:</strong></p>
+                <p>احتفظ برقم طبيب القلب، قسم طوارئ المستشفى، والإسعاف المحلي.</p>
+                <p><strong>رابعاً: علامات الخطر التي تستدعي الاتصال بالطبيب فورًا:</strong></p>
+                <ul>
+                    <li><strong>الحرارة:</strong> ارتفاع درجة الحرارة فوق 38 درجة مئوية.</li>
+                    <li><strong>الجرح الجراحي:</strong> احمرار أو تورم متزايد، خروج أي سوائل، انفتاح حواف الجرح.</li>
+                    <li><strong>التنفس:</strong> صعوبة متزايدة، تنفس سريع جدًا، تغير لون الشفاه للأزرق.</li>
+                    <li><strong>الحالة العامة:</strong> خمول شديد، رفض الرضاعة، قيء مستمر، بكاء غير مبرر.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Back to top button -->
+    <button id="back-to-top" class="fixed bottom-5 right-5 bg-red-500 text-white p-3 rounded-full shadow-lg hidden hover:bg-red-600 transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+    </button>
+    
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Modal functionality
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.getElementById(modalId).classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.fixed.inset-0').forEach(modal => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            });
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Q&A Data and Accordion
+        const qaData = [
+            { q: "ما هي أكثر أمراض القلب الخلقية شيوعًا؟", a: "عيوب الحاجز البطيني (VSD)، أو ما يعرف بـ 'ثقب القلب' بين البطينين." },
+            { q: "لماذا يُعتبر اكتشاف أمراض القلب لدى الجنين مهمًا؟", a: "يسمح التشخيص المبكر بالتخطيط للولادة في مركز متخصص، ويوفر فرصة للتدخل السريع بعد الولادة، مما يحسن من فرص نجاة الطفل." },
+            { q: "ما هي 'رباعية فالو' (Tetralogy of Fallot)؟", a: "هي مجموعة من أربعة عيوب خلقية في القلب تسبب نقص الأكسجين في الدم (الزرقة)." },
+            { q: "هل يمكن لبعض ثقوب القلب أن تنغلق من تلقاء نفسها؟", a: "نعم، العديد من عيوب الحاجز البطيني والأذيني الصغيرة قد تنغلق تلقائيًا خلال السنوات الأولى من عمر الطفل." },
+            { q: "ما هو 'تبديل الشرايين الكبرى' (d-TGA)؟", a: "هو عيب خلقي خطير حيث يخرج الشريان الأورطي من البطين الأيمن والشريان الرئوي من البطين الأيسر." },
+            { q: "ما هي متلازمة القلب الأيسر الناقص التنسج (HLHS)؟", a: "هي حالة نادرة وخطيرة يكون فيها الجانب الأيسر من القلب غير مكتمل النمو." },
+            { q: "لماذا يُعطى دواء البروستاغلاندين (PGE1) لبعض الأطفال حديثي الولادة؟", a: "يُعطى للحفاظ على 'القناة الشريانية' مفتوحة، وهو أمر ضروري في بعض أمراض القلب الخلقية لتوفير تدفق دم كافٍ للجسم أو للرئتين." },
+            { q: "ما هو تضيق الشريان الأورطي (Coarctation of the Aorta)؟", a: "هو تضيق موضعي في الشريان الأورطي، يعيق تدفق الدم إلى الجزء السفلي من الجسم." },
+            { q: "هل الجراحة هي الخيار الوحيد لتضيق الشريان الأورطي؟", a: "لا، يمكن علاج بعض الحالات عن طريق القسطرة باستخدام البالون أو الدعامات." },
+            { q: "لماذا يحتاج بعض الأطفال إلى جهاز التنفس الصناعي بعد جراحة القلب؟", a: "لتقليل عبء التنفس على الجسم، مما يسمح للقلب بالتعافي دون إجهاد إضافي." },
+            { q: "هل يمكن للأطفال الذين خضعوا لجراحة قلب أن يعيشوا حياة طبيعية؟", a: "نعم، بفضل التقدم الهائل في الجراحة والعناية الطبية، يعيش معظم الأطفال حياة طبيعية ونشطة بعد الجراحة التصحيحية." },
+            { q: "ما هو التهاب الشغاف العدوائي (Infective Endocarditis)؟", a: "هو عدوى تصيب البطانة الداخلية للقلب أو صماماته، والأطفال المصابون بأمراض القلب الخلقية هم أكثر عرضة للإصابة به." },
+            { q: "ما هي أهمية المتابعة الطبية طويلة الأمد بعد جراحة القلب؟", a: "للمراقبة الدورية لوظيفة القلب، والكشف المبكر عن أي مضاعفات متأخرة وضمان استمرار صحة الطفل." },
+            { q: "ما هو مرض كاواساكي؟", a: "هو مرض يسبب التهابًا في الأوعية الدموية، وأخطر مضاعفاته هي تأثيره على الشرايين التاجية للقلب." },
+            { q: "هل يمكن أن تؤثر أمراض القلب على نمو دماغ الطفل؟", a: "نعم، نقص الأكسجين المزمن أو انخفاض تدفق الدم إلى الدماغ في بعض الحالات الشديدة يمكن أن يؤثر على النمو العصبي، وهذا هو سبب أهمية التشخيص والعلاج المبكر." }
+        ];
+
+        const accordionContainer = document.getElementById('accordion-container');
+        qaData.forEach((item) => {
+            const accordionItem = document.createElement('div');
+            accordionItem.className = 'bg-white rounded-lg shadow-md';
+            
+            const header = document.createElement('button');
+            header.className = 'w-full text-right p-6 font-semibold text-lg focus:outline-none rtl-accordion-header relative transition-colors duration-300';
+            header.textContent = item.q;
+            
+            const content = document.createElement('div');
+            content.className = 'p-6 pt-0 text-gray-600 hidden';
+            content.innerHTML = `<p>${item.a}</p>`;
+            
+            header.addEventListener('click', () => {
+                const isActive = header.classList.contains('active');
+                
+                // Close all other items
+                accordionContainer.querySelectorAll('.rtl-accordion-header').forEach(h => {
+                    h.classList.remove('active', 'text-red-500');
+                    h.nextElementSibling.classList.add('hidden');
+                });
+                
+                if (!isActive) {
+                    header.classList.add('active', 'text-red-500');
+                    content.classList.remove('hidden');
+                }
+            });
+            
+            accordionItem.appendChild(header);
+            accordionItem.appendChild(content);
+            accordionContainer.appendChild(accordionItem);
+        });
+    </script>
+
+</body>
+</html>

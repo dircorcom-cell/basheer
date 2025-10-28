@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطتك التسويقية في صفحة واحدة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Marhey:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #1e293b; /* Lighter background - slate-800 */
+            color: #e2e8f0;
+            padding-bottom: 100px;
+        }
+        .font-title {
+            font-family: 'Marhey', cursive;
+        }
+        .plan-card {
+            background-color: #334155; /* Lighter card - slate-700 */
+            border: 1px solid #475569; /* Lighter border - slate-600 */
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .plan-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .timeline-path::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background-color: #475569; /* Adjusted path color */
+        }
+        .timeline-item .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 4px solid #475569; /* Adjusted dot border */
+            background-color: #1e293b; /* Adjusted dot background */
+            z-index: 1;
+        }
+        .timeline-item:nth-child(1) .timeline-dot { background-color: #4285f4; }
+        .timeline-item:nth-child(2) .timeline-dot { background-color: #4285f4; }
+        .timeline-item:nth-child(3) .timeline-dot { background-color: #4285f4; }
+        .timeline-item:nth-child(4) .timeline-dot { background-color: #34a853; }
+        .timeline-item:nth-child(5) .timeline-dot { background-color: #34a853; }
+        .timeline-item:nth-child(6) .timeline-dot { background-color: #34a853; }
+        .timeline-item:nth-child(7) .timeline-dot { background-color: #fbbc05; }
+        .timeline-item:nth-child(8) .timeline-dot { background-color: #fbbc05; }
+        .timeline-item:nth-child(9) .timeline-dot { background-color: #fbbc05; }
+
+        @media (min-width: 768px) {
+            .timeline-item:nth-child(odd) .plan-card {
+                margin-right: calc(50% + 30px);
+            }
+            .timeline-item:nth-child(even) .plan-card {
+                margin-left: calc(50% + 30px);
+            }
+        }
+        
+        @media print {
+            @page { size: A3 landscape; margin: 15mm; }
+            body { padding-bottom: 0 !important; background-color: white; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color: #111; }
+            footer { display: none !important; }
+            .container { max-width: 100%; padding: 0; margin: 0; }
+            header { margin-bottom: 2rem !important; }
+            h1 { font-size: 2.5rem !important; color: #111; }
+            .plan-card { box-shadow: none !important; border: 1px solid #e5e7eb; background-color: #f9fafb; color: #111; }
+            .timeline-path, .timeline-dot { display: none; }
+            .timeline-item { width: 30%; float: right; margin: 1%; }
+            .stage-title { background-color: #eee !important; color: #111 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-800">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-20">
+            <h1 class="font-title text-4xl md:text-6xl font-bold text-white">خطتك التسويقية في صفحة واحدة</h1>
+            <p class="mt-4 text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">دليلك البصري لبناء استراتيجية متكاملة في 9 خطوات عملية.</p>
+            <p class="mt-2 text-sm text-slate-400">لقناة التسويق - فكرة</p>
+        </header>
+        
+        <div class="relative timeline-path">
+            <div class="timeline-item relative mb-12" id="item1">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">🎯</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">1. سوقك المستهدف</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">من هو عميلك المثالي بالتحديد؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** كلما كنت أكثر تحديدًا، كان تسويقك أكثر فعالية.<br> **مثال:** بدلاً من "الشباب"، حدد "طلاب الجامعات الذين يبحثون عن تدريب عملي في التسويق الرقمي".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item relative mb-12" id="item2">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">✉️</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">2. رسالتك التسويقية</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">ما هي الرسالة الواضحة التي ستقدمها لحل مشكلتهم؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** ركز على النتائج والتحول الذي سيحدث في حياة عميلك.<br> **مثال:** بدلاً من "نقدم دورات تسويق"، قل "نساعدك على إطلاق حملتك الإعلانية الأولى الناجحة في 30 يومًا".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item relative mb-12" id="item3">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">📢</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">3. الوسائط الإعلانية</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">أين ستنشر رسالتك للوصول إلى سوقك؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** اذهب حيث يتواجد عميلك المثالي. لا تشتت جهودك.<br> **مثال:** إذا كان جمهورك طلاب جامعات، فإن انستغرام وتيك توك ولينكدإن قد تكون أكثر فعالية.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item relative mb-12" id="item4">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">🧲</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">4. جذب العملاء المحتملين</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">ما هو 'الطُعم' الذي ستقدمه مقابل معلوماتهم؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** قدم شيئًا ذا قيمة عالية مجانًا لكسب ثقتهم.<br> **مثال:** "حمّل مجانًا: قائمة تحقق من 10 خطوات لإعداد صفحة هبوط احترافية".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item relative mb-12" id="item5">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">🌱</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">5. رعاية العملاء المحتملين</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">كيف ستبني الثقة معهم وتظل في أذهانهم؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** معظم الناس لا يشترون فورًا. تابعهم بقيمة مستمرة.<br> **مثال:** إرسال سلسلة من 3-5 رسائل بريد إلكتروني تعليمية ومفيدة.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item relative mb-12" id="item6">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">🛒</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">6. تحويل المبيعات</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">ما هي استراتيجيتك لتحويلهم إلى عملاء؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** اجعل عملية الشراء سهلة وقدم عرضًا لا يقاوم.<br> **مثال:** "سجل الآن واحصل على خصم 50% + استشارة مجانية. العرض ينتهي خلال 48 ساعة".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item relative mb-12" id="item7">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">🌟</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">7. تقديم تجربة عالمية</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">كيف ستجعل عميلك يشعر بالرضا التام؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** البيع هو بداية العلاقة. تجربة ما بعد الشراء هي ما يخلق الولاء.<br> **مثال:** إرسال فيديو ترحيبي شخصي، وتقديم دعم فني سريع.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item relative mb-12" id="item8">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">📈</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">8. زيادة القيمة الدائمة</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">كيف ستشجعهم على الشراء منك مرة أخرى؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** العميل الحالي هو أسهل طريقة لزيادة أرباحك.<br> **مثال:** قدم لهم دورة متقدمة، أو خدمة استشارات شخصية، أو اشتراكًا شهريًا.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item relative" id="item9">
+                <div class="timeline-dot"></div>
+                <div class="plan-card rounded-xl p-6 w-full md:w-auto">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">🤝</div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white">9. تشجيع الإحالات</h3>
+                            <p class="text-slate-300 mt-1 font-semibold">كيف ستنشئ نظامًا يحفزهم على جلب عملاء جدد؟</p>
+                            <p class="text-xs text-slate-400 mt-3 border-t border-slate-600 pt-2">**الشرح:** حوّل عملائك الراضين إلى فريق تسويق.<br> **مثال:** إنشاء برنامج "سفير العلامة التجارية" حيث يحصل العميل على عمولة أو هدية.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="fixed bottom-0 left-0 right-0 bg-gray-900/80 backdrop-blur-sm border-t border-gray-700 p-3 z-20">
+        <div class="container mx-auto flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm">
+            <h3 class="font-bold text-white w-full text-center sm:w-auto mb-2 sm:mb-0">تواصل معنا:</h3>
+            <a href="https://whatsapp.com/channel/0029VbAqVeHEQIauDsnamO2i" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-slate-300 hover:text-green-400 transition-colors">
+                <span>🟢</span>
+                <span>أكاديمية المبيعات</span>
+            </a>
+            <a href="https://whatsapp.com/channel/0029Vb5z65f7Noa18DSUnq13" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-slate-300 hover:text-green-400 transition-colors">
+                <span>🟢</span>
+                <span>التسويق فكرة</span>
+            </a>
+            <a href="https://wa.me/966537371592" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-slate-300 hover:text-green-400 transition-colors">
+                <span>💬</span>
+                <span>عبر الواتساب</span>
+            </a>
+            <a href="mailto:con4sultant@gmail.com" class="flex items-center gap-2 text-slate-300 hover:text-blue-400 transition-colors">
+                <span>📧</span>
+                <span>عبر البريد الالكتروني</span>
+            </a>
+        </div>
+    </footer>
+
+</body>
+</html>

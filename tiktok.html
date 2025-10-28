@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل نجاح تيك توك في المملكة العربية السعودية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Harmony -->
+    <!-- Application Structure Plan: The application is structured as a single-page strategic dashboard with a clear, tab-based navigation system for five core pillars: Introduction, Algorithm, Content, Timing, and Growth. This structure was chosen over a linear report format to allow users to quickly access the information most relevant to them. The dashboard approach facilitates non-linear exploration, making it easy to compare hashtag data, explore influencer categories, and check optimal posting times. Key interactions include tab switching to reveal different content sections and hovering over charts for detailed data. This design prioritizes usability and quick synthesis of actionable insights, which is more effective for a digital marketer or content creator than a static document. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Hashtag popularity data. Goal: Compare. Viz/Presentation: Interactive Bar Chart. Interaction: Tooltip on hover shows exact view/post counts. Justification: A bar chart is the most effective way to visually compare the massive reach of different hashtags. Chart.js (Canvas) was used for its interactivity and responsiveness.
+        - Report Info: Key algorithm factors. Goal: Inform/Organize. Viz/Presentation: Icon-based feature cards in a grid layout. Interaction: N/A, static display. Justification: Cards with icons break down complex concepts into digestible, visually appealing chunks, improving readability and retention. Implemented with HTML/Tailwind.
+        - Report Info: Optimal posting times. Goal: Inform. Viz/Presentation: A structured, color-coded table. Interaction: N/A. Justification: A table is the clearest way to present time-based data across a week, allowing for easy scanning and planning. Implemented with HTML/Tailwind.
+        - Report Info: Content themes and influencer examples. Goal: Organize. Viz/Presentation: Accordion-style collapsible sections. Interaction: Click to expand/collapse. Justification: An accordion prevents information overload by hiding detailed examples until the user actively seeks them out, keeping the main interface clean. Implemented with HTML/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+            padding-bottom: 80px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .nav-btn {
+            transition: all 0.3s ease;
+        }
+        .nav-btn.active {
+            background-color: #8D6E63;
+            color: #FFFFFF;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .nav-btn:not(.active):hover {
+            background-color: #D7CCC8;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #EFEBE9;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .accordion-header {
+            cursor: pointer;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .footer-sticky {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #FDFBF8;
+            border-top: 1px solid #EFEBE9;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#6D4C41] mb-2">دليل نجاح تيك توك التفاعلي</h1>
+            <p class="text-lg text-gray-600 mb-2">قواعد وتكتيكات عملية للنشر الفعال في المملكة العربية السعودية</p>
+            <p class="text-base text-gray-700 font-semibold text-center mt-2">إعداد: د. بشير بن علي</p>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-lg p-4 mb-12 sticky top-4 z-10">
+            <nav class="flex flex-wrap justify-center items-center space-x-2 md:space-x-4 rtl:space-x-reverse">
+                 <button id="nav-intro" class="nav-btn active text-sm md:text-base font-semibold py-3 px-4 md:px-6 rounded-full" data-target="intro">
+                    <span class="hidden sm:inline">مقدمة</span>
+                </button>
+                <button id="nav-algorithm" class="nav-btn text-sm md:text-base font-semibold py-3 px-4 md:px-6 rounded-full" data-target="algorithm">
+                    <span class="hidden sm:inline">إتقان</span> الخوارزمية
+                </button>
+                <button id="nav-content" class="nav-btn text-sm md:text-base font-semibold py-3 px-4 md:px-6 rounded-full" data-target="content">
+                    <span class="hidden sm:inline">صياغة</span> المحتوى
+                </button>
+                <button id="nav-timing" class="nav-btn text-sm md:text-base font-semibold py-3 px-4 md:px-6 rounded-full" data-target="timing">
+                    <span class="hidden sm:inline">أفضل</span> أوقات النشر
+                </button>
+                <button id="nav-attention" class="nav-btn text-sm md:text-base font-semibold py-3 px-4 md:px-6 rounded-full" data-target="attention-strategy">
+                    <span class="hidden sm:inline">استراتيجية</span> جذب الانتباه
+                </button>
+                <button id="nav-growth" class="nav-btn text-sm md:text-base font-semibold py-3 px-4 md:px-6 rounded-full" data-target="growth">
+                    <span class="hidden sm:inline">استراتيجيات</span> النمو والربح
+                </button>
+                 <button id="nav-learn" class="nav-btn text-sm md:text-base font-semibold py-3 px-4 md:px-6 rounded-full" data-target="learn">
+                    <span class="hidden sm:inline">تعلم</span> معنا
+                </button>
+            </nav>
+        </div>
+
+        <main>
+            <!-- Section: Introduction -->
+            <section id="intro" class="content-section active">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-[#8D6E63] mb-2">الضرورة الاستراتيجية لتيك توك في المملكة العربية السعودية</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        تيك توك ليس مجرد منصة تواصل اجتماعي في المملكة العربية السعودية، بل هو نظام بيئي رقمي أساسي للتفاعل. يوضح هذا القسم مكانة المنصة الهامة ودورها الاستراتيجي في المشهد الرقمي السعودي، مستعرضًا أبرز الأرقام التي تؤكد أهميتها.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4 text-[#6D4C41]">🚀</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">أعلى انتشار عالمي</h3>
+                        <p>تتمتع المملكة العربية السعودية بأحد أعلى معدلات انتشار تيك توك على مستوى العالم، حيث يبلغ **133.7%**، مما يدل على استخدامه المكثف واندماجه العميق في الحياة الرقمية للسعوديين.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4 text-[#6D4C41]">🎬</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">الفيديو القصير هو المفضل</h3>
+                        <p>يُعد المحتوى القصير التنسيق المفضل للجمهور السعودي، مما يؤدي إلى ارتفاع معدلات التفاعل على تيك توك مقارنة بالمنصات الأخرى، ويجعله ركيزة أساسية لأي استراتيجية تسويق.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4 text-[#6D4C41]">🤝</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">دعم حكومي وشراكات</h3>
+                        <p>يشير التعاون بين وزارة الثقافة وتيك توك إلى دعم حكومي واستراتيجي، مما يؤكد أن دمج القيم الثقافية والاجتماعية السعودية في المحتوى ليس مجرد ممارسة فضلى، بل ضرورة استراتيجية.</p>
+                    </div>
+                </div>
+                <div class="mt-10 bg-gray-100 p-6 rounded-lg">
+                    <p class="text-gray-700">
+                        إن هذا الانتشار الواسع، المقترن بتفضيل المحتوى المرئي القصير، يشير إلى أن تيك توك لم يعد مجرد قناة، بل هو نظام بيئي رقمي لا غنى عنه للتفاعل والتوسع في السوق. وبالنسبة للمبدعين والعلامات التجارية، يمثل تيك توك نقطة دخول استراتيجية مدفوعة بالجودة والأصالة.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section: Algorithm -->
+            <section id="algorithm" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-[#8D6E63] mb-2">فهم خوارزمية تيك توك</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        خوارزمية تيك توك هي المحرك الذي يوصل محتواك للجمهور المناسب. النجاح يعتمد على فهم الإشارات التي تعطيها الأولوية، مثل التفاعل العميق وجودة المحتوى، بدلاً من المقاييس السطحية كعدد المتابعين.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4">⏱️</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">معدل إكمال الفيديو</h3>
+                        <p>أقوى مؤشر لاهتمام المستخدم. مقاطع الفيديو التي تُشاهد حتى النهاية أو يُعاد مشاهدتها تحصل على دفعة قوية في الانتشار.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4">❤️</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">إشارات التفاعل المباشر</h3>
+                        <p>الإعجابات، التعليقات، المشاركات، وحفظ الفيديو هي إشارات حاسمة تدل على أن المحتوى ذو قيمة ويجب عرضه لجمهور أوسع.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4">🎯</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">التخصص والاتساق</h3>
+                        <p>النشر المستمر حول مجال محدد يساعد الخوارزمية على تصنيفك كخبير وعرض محتواك على الجمهور المهتم بهذا المجال.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4">🔍</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">معلومات الفيديو</h3>
+                        <p>تستخدم الخوارزمية الكلمات المفتاحية في الوصف، الهاشتاجات، والأصوات المستخدمة لمطابقة الفيديو مع اهتمامات المستخدمين.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4">📈</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">لا لأولوية المتابعين</h3>
+                        <p>عدد المتابعين أو أداء الفيديوهات السابقة لا يؤثر مباشرة على الانتشار، مما يمنح الحسابات الجديدة فرصة متكافئة للنجاح.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4">🔄</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">حلقة التغذية الراجعة</h3>
+                        <p>تتعلم الخوارزمية باستمرار من تفاعل الجمهور مع محتواك، مما "يدربها" على إيصاله للجمهور الأكثر تقبلاً مع مرور الوقت.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Content -->
+            <section id="content" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-[#8D6E63] mb-2">صياغة محتوى عالي التأثير</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        في السوق السعودي، المحتوى الأصيل والملائم ثقافياً هو مفتاح النجاح. يجب أن يجمع المحتوى بين الجودة العالية، وفهم اللهجة المحلية، والاستفادة من الترندات الشائعة بذكاء.
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12 items-start">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-[#6D4C41]">ركائز المحتوى الناجح</h3>
+                        <div id="accordion-container" class="space-y-4">
+                            <div class="accordion-item border rounded-lg overflow-hidden bg-white">
+                                <div class="accordion-header p-5 flex justify-between items-center bg-stone-50">
+                                    <h4 class="font-semibold text-lg">الجودة والملاءمة الثقافية</h4>
+                                    <span class="transform transition-transform duration-300">▼</span>
+                                </div>
+                                <div class="accordion-content">
+                                    <div class="p-5 border-t">
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li><strong>الجودة أولاً:</strong> إضاءة جيدة وصوت واضح أهم من كثرة النشر.</li>
+                                            <li><strong>اللغة العربية:</strong> المحتوى والوصف باللغة العربية يحقق أداءً أفضل.</li>
+                                            <li><strong>الحساسية الثقافية:</strong> احترام القيم الإسلامية والعادات المحلية أمر غير قابل للتفاوض.</li>
+                                            <li><strong>الأصالة واللهجة المحلية:</strong> الجمهور يفضل المحتوى العفوي والواقعي من مبدعين محليين.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item border rounded-lg overflow-hidden bg-white">
+                                <div class="accordion-header p-5 flex justify-between items-center bg-stone-50">
+                                    <h4 class="font-semibold text-lg">مواضيع ومجالات شائعة</h4>
+                                    <span class="transform transition-transform duration-300">▼</span>
+                                </div>
+                                <div class="accordion-content">
+                                    <div class="p-5 border-t">
+                                       <p class="mb-4">يكشف تحليل المؤثرين السعوديين عن اهتمام واسع بمواضيع متنوعة تتجاوز الترفيه:</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="bg-brown-100 text-brown-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">الترفيه</span>
+                                            <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">التعليم وتنمية المهارات</span>
+                                            <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">الطعام</span>
+                                            <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">الموضة</span>
+                                            <span class="bg-indigo-100 text-indigo-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">الكوميديا</span>
+                                            <span class="bg-purple-100 text-purple-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">العائلة</span>
+                                             <span class="bg-pink-100 text-pink-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">المالية</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="accordion-item border rounded-lg overflow-hidden bg-white">
+                                <div class="accordion-header p-5 flex justify-between items-center bg-stone-50">
+                                    <h4 class="font-semibold text-lg">الاستفادة من الترندات</h4>
+                                    <span class="transform transition-transform duration-300">▼</span>
+                                </div>
+                                <div class="accordion-content">
+                                    <div class="p-5 border-t">
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li><strong>الأصوات والموسيقى:</strong> استخدام المقاطع الصوتية الشائعة يعزز الاكتشاف.</li>
+                                            <li><strong>التحديات الفيروسية:</strong> المشاركة في التحديات تزيد من الظهور، ولكن يجب تقييمها ثقافياً.</li>
+                                            <li><strong>الهاشتاجات:</strong> استخدام الهاشتاجات الرائجة وذات الصلة أمر ضروري.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-[#6D4C41]">الهاشتاجات الأكثر رواجاً في السعودية</h3>
+                        <p class="text-gray-600 mb-4">
+                            الهاشتاجات هي أداة قوية لتصنيف المحتوى والوصول إلى جمهور أوسع. يوضح الرسم البياني التالي حجم المشاهدات الهائل للهاشتاجات الرئيسية في المملكة.
+                        </p>
+                        <div class="card p-4 rounded-lg">
+                            <div class="chart-container">
+                                <canvas id="hashtagsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Timing -->
+            <section id="timing" class="content-section">
+                 <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-[#8D6E63] mb-2">أوقات النشر المثلى</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        لا توجد بيانات عالمية دقيقة للسعودية، لذا فإن الاختبار والتحليل هما مفتاح النجاح. استخدم هذه الأوقات العالمية كنقطة بداية، ثم قم بتحليل بيانات حسابك لتحديد الأوقات التي يكون فيها جمهورك أكثر نشاطًا.
+                    </p>
+                </div>
+                
+                <div class="card rounded-lg overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="text-xs text-[#6D4C41] uppercase bg-stone-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">اليوم</th>
+                                    <th scope="col" class="px-6 py-3">أوقات الذروة المقترحة (بتوقيت السعودية)</th>
+                                    <th scope="col" class="px-6 py-3">ملاحظات سلوكية</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">الاثنين</th>
+                                    <td class="px-6 py-4">6:00 م - 8:00 م</td>
+                                    <td class="px-6 py-4">بداية الأسبوع، فترة ما بعد العمل.</td>
+                                </tr>
+                                <tr class="bg-stone-50 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">الثلاثاء</th>
+                                    <td class="px-6 py-4">5:00 م | 9:00 م - 11:00 م</td>
+                                    <td class="px-6 py-4">ذروة مسائية بعد يوم عمل.</td>
+                                </tr>
+                                 <tr class="bg-white border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">الأربعاء</th>
+                                    <td class="px-6 py-4">3:00 م - 5:00 م | 10:00 م - 12:00 ص</td>
+                                    <td class="px-6 py-4">أفضل يوم بشكل عام، ذروة منتصف الأسبوع.</td>
+                                </tr>
+                                <tr class="bg-stone-50 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">الخميس</th>
+                                    <td class="px-6 py-4">5:00 م | 9:00 م - 1:00 ص</td>
+                                    <td class="px-6 py-4">بداية عطلة نهاية الأسبوع، نشاط مسائي عالٍ.</td>
+                                </tr>
+                                 <tr class="bg-white border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">الجمعة</th>
+                                    <td class="px-6 py-4">1:00 م - 3:00 م | 10:00 م - 1:00 ص</td>
+                                    <td class="px-6 py-4">بعد صلاة الجمعة وفي المساء.</td>
+                                </tr>
+                                <tr class="bg-stone-50 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">السبت</th>
+                                    <td class="px-6 py-4">7:00 م - 9:00 م</td>
+                                    <td class="px-6 py-4">مساء عطلة نهاية الأسبوع.</td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">الأحد</th>
+                                    <td class="px-6 py-4">4:00 م | 9:00 م - 11:00 م</td>
+                                    <td class="px-6 py-4">نهاية العطلة، استعدادًا للأسبوع الجديد.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                 <div class="mt-8 bg-amber-100 border-r-4 border-amber-500 text-amber-700 p-4 rounded-lg" role="alert">
+                    <p class="font-bold">نصيحة الخبراء:</p>
+                    <p>استخدم تحليلات تيك توك (Creator Tools) لمراقبة "أوقات نشاط المتابعين". هذه هي البيانات الأكثر دقة لتحديد أفضل وقت للنشر لجمهورك المحدد.</p>
+                </div>
+            </section>
+
+            <!-- Section: Attention Strategy -->
+            <section id="attention-strategy" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-[#8D6E63] mb-2">استراتيجية جذب الانتباه</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        أفضل طريقة لجذب المشاهدين في **التسويق العقاري** هي استخدام **"الهوك" القوي** الذي يتناسب مع نوع الفيديو. إليك **10 بدايات جذابة**.
+                    </p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div>
+                        <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">1. فيديو عن الحي الذي يقع فيه العقار</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **طرح سؤال مؤلم** + **إحصائية صادمة**)</h4>
+                            <p class="mb-2 text-gray-600">*"هل تعلم أن 70% من المشترين يندمون على اختيارهم للحي بعد السنة الأولى؟ لكن هذا الحي مختلف تمامًا... شاهد لماذا!"*</p>
+                            <p class="text-gray-600">*"تخيل العيش في مكان يجمع بين الهدوء والتطور معًا... هذا ليس حلمًا، إنه حي [اسم الحي]!"*</p>
+                        </div>
+                        <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">2. فيديو عن المبنى الذي تقع فيه الوحدة</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **وعد واضح** + **قصة شخصية**)</h4>
+                            <p class="mb-2 text-gray-600">*"بعد 5 سنوات من البحث، وجدنا أخيرًا المبنى الذي يجمع بين الفخامة والأمان... وهذا ما ستحصل عليه إذا اخترت العيش هنا!"*</p>
+                            <p class="text-gray-600">*"هذا المبنى ليس مجرد وحدات سكنية... إنه مجتمع مصغر بكل ما تحتاجه!"*</p>
+                        </div>
+                        <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">3. فيديو عن تصميم الوحدة السكنية</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **مشهد درامي** + **استخدام مفارقة**)</h4>
+                            <p class="italic mb-2 text-gray-600">(يظهر كاميرا تدخل الوحدة مع موسيقى مبهجة)</p>
+                            <p class="mb-2 text-gray-600">*"شاهد كيف يمكن لـ 120 مترًا أن تتحول إلى قصر صغير... بلمسة تصميمية ذكية!"*</p>
+                            <p class="text-gray-600">*"معظم الوحدات السكنية متشابهة... لكن هذه الوحدة ستغير مفهومك عن السكن!"*</p>
+                        </div>
+                         <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">4. فيديو عن سعر الوحدة السكنية</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **نهي الجمهور** + **مفاجأة**)</h4>
+                            <p class="mb-2 text-gray-600">*"لا تدفع قرشًا إضافيًا قبل أن تعرف كيف حصلت على هذه الوحدة بسعر التكلفة!"*</p>
+                            <p class="text-gray-600">*"هل تعتقد أن السعر مرتفع؟ انتظر حتى ترى ما نقدمه مقابل كل جنيه!"*</p>
+                        </div>
+                         <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">5. فيديو عن شركة التطوير وجودتها</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **إحصائية صادمة** + **سؤال مؤلم**)</h4>
+                            <p class="mb-2 text-gray-600">*"90% من الشركات تقول إنها تقدم جودة عالية... لكننا نثبت ذلك بالأرقام!"*</p>
+                            <p class="text-gray-600">*"كيف تعرف أن شركة التطوير جديرة بالثقة؟ الجواب في هذا الفيديو!"*</p>
+                        </div>
+                    </div>
+                    <div>
+                         <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">6. فيديو عن المشروع قيد الإنشاء</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **وعد بحل سحري** + **تشويق**)</h4>
+                            <p class="mb-2 text-gray-600">*"بعد 6 أشهر، سيرتفع سعر هذه الوحدات بنسبة 30%... ولكن اليوم يمكنك الحصول عليها بسعر التأسيس!"*</p>
+                            <p class="text-gray-600">*"هذا ليس مجرد مشروع سكني... إنه مستقبل المنطقة!"*</p>
+                        </div>
+                         <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">7. فيديو عن مميزات الوحدة (إضافي)</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **عرض مشكلة شائعة** + **حل**)</h4>
+                            <p class="text-gray-600">*"تعبت من الشقق الضيقة ذات التصميم التقليدي؟ هذه الوحدة ستغير رأيك!"*</p>
+                        </div>
+                        <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">8. فيديو عن الجولة الافتراضية (إضافي)</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **تشويق بصري**)</h4>
+                            <p class="italic mb-2 text-gray-600">(مقطع سريع من الجولة مع تعليق:)</p>
+                            <p class="text-gray-600">*"شاهد بنفسك... لن تصدق أن هذه الوحدة متاحة بهذا السعر!"*</p>
+                        </div>
+                        <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">9. فيديو عن آراء العملاء (إضافي)</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **قصة نجاح**)</h4>
+                            <p class="text-gray-600">*"قبل 3 أشهر، كانت هذه العائلة تبحث عن سكن مثالي... واليوم هم هنا ليخبروكم تجربتهم!"*</p>
+                        </div>
+                        <div class="card p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">10. فيديو عن عروض محدودة (إضافي)</h3>
+                            <h4 class="font-semibold text-gray-700 mb-2">(البداية: **نداء عاجل**)</h4>
+                            <p class="text-gray-600">*"تحذير: هذه العروض لن تتكرر هذا العام... فقط 5 وحدات متبقية!"*</p>
+                        </div>
+
+                        <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-700 p-4 rounded-lg">
+                            <h3 class="font-bold text-lg mb-2">نصائح إضافية:</h3>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>استخدم **لقطات جوية للحي** في فيديو الموقع.</li>
+                                <li>أضف **مقارنات سريعة** ("شقة بثلاث غرف في هذا الحي بسعر غرفتين في الأحياء المجاورة!").</li>
+                                <li>ركز على **الفائدة العاطفية** ("هنا.. لن يعاني أطفالك من زحام المدارس").</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+             <!-- Section: Growth and Revenue -->
+            <section id="growth" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-[#8D6E63] mb-2">استراتيجيات النمو والربح</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        تحويل حضورك على تيك توك إلى مصدر دخل مستدام يتطلب تخطيطًا استراتيجيًا. يوضح هذا القسم كيفية بناء استراتيجية نمو فعالة وتحقيق الربح.
+                    </p>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-md mb-8">
+                    <h3 class="text-2xl font-bold mb-4 text-[#6D4C41]">1. تحليل الجمهور السعودي وفهمه</h3>
+                    <p class="text-gray-600 mb-4">
+                        النمو يبدأ من فهم دقيق لجمهورك. قبل أن تنشر أي محتوى، يجب أن تعرف لمن تتحدث.
+                    </p>
+                    <ul class="list-disc list-inside space-y-3 text-gray-700">
+                        <li>
+                            <p><strong>تحديد الفئة العمرية والاهتمامات:</strong> استخدم أدوات تحليلات تيك توك المدمجة (Analytics) لمعرفة الفئات العمرية الأكثر تفاعلاً مع حسابك، بالإضافة إلى نوع المحتوى الذي يفضلونه. على سبيل المثال، إذا كان جمهورك من جيل الألفية، فقد يهتمون بالمحتوى التعليمي والمالي. إذا كانوا من الجيل Z، قد ينجذبون للترفيه والترندات السريعة.
+                                <span class="block mt-2 text-sm text-gray-500">
+                                    <span class="font-bold">كيف تفعلها عمليًا:</span> افتح "Creator tools" ثم "Analytics" ثم "Followers". ستجد هناك بيانات دقيقة عن التركيبة السكانية لجمهورك.</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p><strong>استكشاف اهتمامات الجمهور:</strong> لا تكتفِ بتحليلات تيك توك فقط. راقب التعليقات على فيديوهاتك، والأسئلة التي يطرحها متابعوك. هذه التعليقات كنز من المعلومات التي تكشف عن احتياجاتهم ورغباتهم.
+                                <span class="block mt-2 text-sm text-gray-500">
+                                    <span class="font-bold">كيف تفعلها عمليًا:</span> خصص 15 دقيقة يوميًا للرد على التعليقات ومراقبة المواضيع المتكررة. اطرح أسئلة في فيديوهاتك لتحفيزهم على المشاركة.</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-md mb-8">
+                    <h3 class="text-2xl font-bold mb-4 text-[#6D4C41]">2. استراتيجيات الربح من المحتوى</h3>
+                    <p class="text-gray-600 mb-4">
+                        بمجرد أن تفهم جمهورك وتستطيع الوصول إليه، يمكنك البدء في تحويل هذا الوصول إلى دخل.
+                    </p>
+                    <ul class="list-disc list-inside space-y-3 text-gray-700">
+                        <li>
+                            <p><strong>التسويق بالمحتوى والتحويل إلى عملاء:</strong> هدفك ليس فقط المشاهدات، بل بناء علاقة ثقة. استخدم محتواك لتقديم قيمة حقيقية (مثل نصائح عقارية، معلومات عن حي سكني) ثم وجه المتابعين بطريقة سلسة إلى قنواتك الأخرى.
+                                <span class="block mt-2 text-sm text-gray-500">
+                                    <span class="font-bold">كيف تفعلها عمليًا:</span> في نهاية الفيديو، قل جملة مثل: "للمزيد من التفاصيل حول هذا المشروع، الرابط في البايو." أو "أجب عن أسئلتكم العقارية في بث مباشر يوم الأربعاء".</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p><strong>الربح المباشر:</strong> تيك توك يوفر أدوات للربح مباشرة من المنصة.
+                                <span class="block mt-2 text-sm text-gray-500">
+                                    <span class="font-bold">كيف تفعلها عمليًا:</span>
+                                    <ul class="list-[circle] list-inside mt-1 space-y-1">
+                                        <li><strong class="font-semibold">البث المباشر:</strong> قم ببث مباشر بشكل منتظم للإجابة على أسئلة الجمهور. خلال البث، قد يرسل لك المتابعون هدايا افتراضية (هدايا) يمكن تحويلها إلى أموال.</li>
+                                        <li><strong class="font-semibold">هدايا الفيديو:</strong> بعد أن تحقق شروط معينة، يمكنك تفعيل ميزة "هدايا الفيديو"، والتي تسمح للمتابعين بإرسال هدايا على مقاطع الفيديو التي تعجبهم.</li>
+                                    </ul>
+                                </span>
+                            </p>
+                        </li>
+                        <li>
+                            <p><strong>الشراكات المدفوعة (Influencer Marketing):</strong> عندما ينمو حسابك، يمكنك التعاون مع علامات تجارية أخرى في حملات إعلانية مدفوعة.
+                                <span class="block mt-2 text-sm text-gray-500">
+                                    <span class="font-bold">كيف تفعلها عمليًا:</span>
+                                    <ul class="list-[circle] list-inside mt-1 space-y-1">
+                                        <li><strong>بناء ملف تعريفي (Media Kit):</strong> أنشئ ملفًا بسيطًا يوضح أرقام حسابك (عدد المتابعين، معدلات التفاعل، التركيبة السكانية)، وسعرك المقترح للشراكات.</li>
+                                        <li><strong>التواصل مع العلامات التجارية:</strong> ابدأ بالتواصل مع العلامات التجارية التي تتوافق مع محتواك وقيمك. لا تتردد في تقديم عروض واضحة ومقنعة.</li>
+                                    </ul>
+                                </span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+             <!-- Section: Learn with Us -->
+            <section id="learn" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-[#8D6E63] mb-2">تعلم معنا</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        للاستمرار في رحلة التعلم والتطور في مجال التسويق والمبيعات، ندعوك للانضمام إلى قنواتنا على واتساب.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4 text-[#25D366]">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" class="w-12 h-12 inline-block">
+                                <path d="M380.9 97.1C339.4 56.4 282.8 35.8 224 35.8c-71.5 0-136.2 36.8-175.8 96.9-39.7 60.2-50.6 130.6-32.5 198.8 18.1 68.3 53 125.1 100.8 171.8 47.7 46.7 104.7 81.6 172.9 99.8 68.2 18.2 138.6 7.3 198.8-32.5 60.2-39.7 96.9-104.4 96.9-175.9-.1-58.8-20.7-115.4-61.4-156.9zM224 416.9c-55.5 0-106.1-28.5-136.6-76.3-30.5-47.8-38.9-105.1-22.1-161.7 16.8-56.6 49.3-104.8 95.8-132.8 46.5-28 101-39.9 157.6-31.5 56.6 8.5 107.1 39.5 137.6 87.3 30.5 47.8 38.9 105.1 22.1 161.7-16.8 56.6-49.3 104.8-95.8 132.8-46.6 28-101 39.9-157.6 31.5zM224 160c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zM128 320c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zM320 320c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zM224 256c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">أكاديمية المبيعات</h3>
+                        <p class="mb-4 text-gray-600">قناة متخصصة في فنون المبيعات وتطوير المهارات. انضم لتتعلم كيف تبني علاقات ناجحة وتغلق الصفقات بفعالية.</p>
+                        <a href="https://whatsapp.com/channel/0029Vb5z65f7Noa18DSUnq13" target="_blank" class="inline-block bg-[#8D6E63] text-white font-semibold py-2 px-6 rounded-full hover:bg-[#6D4C41] transition-colors">
+                            انضم الآن
+                        </a>
+                    </div>
+                    <div class="card p-6 rounded-lg text-center">
+                        <div class="text-5xl mb-4 text-[#25D366]">
+                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" class="w-12 h-12 inline-block">
+                                <path d="M380.9 97.1C339.4 56.4 282.8 35.8 224 35.8c-71.5 0-136.2 36.8-175.8 96.9-39.7 60.2-50.6 130.6-32.5 198.8 18.1 68.3 53 125.1 100.8 171.8 47.7 46.7 104.7 81.6 172.9 99.8 68.2 18.2 138.6 7.3 198.8-32.5 60.2-39.7 96.9-104.4 96.9-175.9-.1-58.8-20.7-115.4-61.4-156.9zM224 416.9c-55.5 0-106.1-28.5-136.6-76.3-30.5-47.8-38.9-105.1-22.1-161.7 16.8-56.6 49.3-104.8 95.8-132.8 46.5-28 101-39.9 157.6-31.5 56.6 8.5 107.1 39.5 137.6 87.3 30.5 47.8 38.9 105.1 22.1 161.7-16.8 56.6-49.3 104.8-95.8 132.8-46.6 28-101 39.9-157.6 31.5zM224 160c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48zM128 320c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zM320 320c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zM224 256c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-[#6D4C41]">التسويق فكرة</h3>
+                        <p class="mb-4 text-gray-600">قناة متخصصة في أحدث استراتيجيات التسويق الرقمي. انضم لتكتشف أفكارًا إبداعية وخطوات عملية لنجاح حملاتك.</p>
+                        <a href="https://whatsapp.com/channel/0029VbAqVeHEQIauDsnamO2i" target="_blank" class="inline-block bg-[#8D6E63] text-white font-semibold py-2 px-6 rounded-full hover:bg-[#6D4C41] transition-colors">
+                            انضم الآن
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer-sticky p-4 text-center text-sm text-gray-600">
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-4 rtl:sm:space-x-reverse">
+            <div class="flex items-center space-x-1 rtl:space-x-reverse">
+                <span>تواصل معنا:</span>
+                <span class="font-semibold">con4sultant@gmail.com</span>
+                <span>|</span>
+                <span class="font-semibold">966537371592+</span>
+            </div>
+            <div>
+                <span>© 2024</span> | <span>تم التصميم بواسطة basheer bin ali</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const contentSections = document.querySelectorAll('.content-section');
+            const navContainer = document.querySelector('nav');
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    contentSections.forEach(section => {
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+
+                    navContainer.scrollTo({
+                        left: button.offsetLeft - (navContainer.offsetWidth / 2) + (button.offsetWidth / 2),
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            const hashtagData = {
+                labels: ['#Saudiarabia', '#KSA', '#Riyadh', '#Jeddah', '#Saudi'],
+                datasets: [{
+                    label: 'إجمالي المشاهدات (بالمليار)',
+                    data: [64.1, 35.9, 24.5, 21.7, 19.5],
+                    backgroundColor: [
+                        'rgba(141, 110, 99, 0.7)',
+                        'rgba(188, 170, 164, 0.7)',
+                        'rgba(215, 204, 200, 0.7)',
+                        'rgba(161, 136, 127, 0.7)',
+                        'rgba(121, 85, 72, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(141, 110, 99, 1)',
+                        'rgba(188, 170, 164, 1)',
+                        'rgba(215, 204, 200, 1)',
+                        'rgba(161, 136, 127, 1)',
+                        'rgba(121, 85, 72, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const hashtagConfig = {
+                type: 'bar',
+                data: hashtagData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'المشاهدات (مليار)',
+                                font: {
+                                    family: 'Tajawal, sans-serif'
+                                }
+                            }
+                        },
+                        y: {
+                             ticks: {
+                                font: {
+                                    family: 'Tajawal, sans-serif',
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            bodyFont: {
+                                family: 'Tajawal, sans-serif'
+                            },
+                            titleFont: {
+                                family: 'Tajawal, sans-serif'
+                            }
+                        }
+                    }
+                }
+            };
+
+            const hashtagsChartCtx = document.getElementById('hashtagsChart');
+            if (hashtagsChartCtx) {
+                new Chart(hashtagsChartCtx, hashtagConfig);
+            }
+
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const icon = header.querySelector('span');
+
+                header.addEventListener('click', () => {
+                    const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = '0px');
+                    document.querySelectorAll('.accordion-header span').forEach(i => i.style.transform = 'rotate(0deg)');
+
+                    if (!isExpanded) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

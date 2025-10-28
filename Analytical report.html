@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقرير التحليلي الاستراتيجي (النهائي)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.07);
+            padding: 1.5rem;
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .table-container::-webkit-scrollbar { width: 8px; }
+        .table-container::-webkit-scrollbar-track { background: #f8fafc; border-radius: 10px;}
+        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px;}
+        .table-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .progress-bar-container {
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            width: 100%;
+            height: 1rem;
+        }
+        .progress-bar {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.5s ease-in-out;
+        }
+        .kpi-card {
+            border-right: 4px solid;
+        }
+        .tab-button {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            border-bottom-color: #2563eb;
+            color: #1d4ed8;
+        }
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <div class="container mx-auto max-w-screen-2xl">
+        <!-- Header -->
+        <header class="mb-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent pb-2">
+                التقرير التحليلي الاستراتيجي
+            </h1>
+            <p class="text-md md:text-lg text-gray-500 mt-2 font-semibold">الفترة الزمنية: 16 مارس 2025 - 31 يوليو 2025</p>
+        </header>
+
+        <!-- Summary Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6">
+            <div class="card text-center p-4"><h3 class="font-bold text-gray-700">أيام التقرير</h3><p id="summary-days" class="text-2xl font-bold text-gray-800 mt-1">0</p></div>
+            <div class="card text-center p-4"><h3 class="font-bold text-gray-700">الموظفين</h3><p id="summary-employees" class="text-2xl font-bold text-gray-800 mt-1">0</p></div>
+            <div class="card text-center p-4"><h3 class="font-bold text-gray-700">المشاريع</h3><p id="summary-projects" class="text-2xl font-bold text-gray-800 mt-1">0</p></div>
+            <div class="card text-center p-4"><h3 class="font-bold text-gray-700">المدن</h3><p id="summary-cities" class="text-2xl font-bold text-gray-800 mt-1">0</p></div>
+            <div class="card text-center p-4"><h3 class="font-bold text-gray-700">مصادر العملاء</h3><p id="summary-sources" class="text-2xl font-bold text-gray-800 mt-1">0</p></div>
+        </div>
+
+        <!-- Filters -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card">
+                <h2 class="text-xl font-bold mb-3 text-gray-700">فلترة حسب الموظف</h2>
+                <select id="salesperson-filter" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 bg-white"></select>
+            </div>
+            <div class="card">
+                <h2 class="text-xl font-bold mb-3 text-gray-700">فلترة حسب المشروع</h2>
+                <select id="project-filter" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 bg-white"></select>
+            </div>
+        </div>
+        
+        <!-- Employee Analysis Card (Initially Hidden) -->
+        <div id="employee-analysis-card" class="card mb-6" style="display: none;">
+            <h2 class="text-2xl font-bold mb-4 text-blue-700">تحليل الأداء للموظف: <span id="analysis-employee-name"></span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-4 bg-green-50 rounded-lg border-r-4 border-green-500">
+                    <h3 class="font-bold text-lg text-green-800 mb-2">✅ نقاط القوة</h3>
+                    <ul id="analysis-positive" class="list-disc list-inside space-y-1 text-green-700"></ul>
+                </div>
+                <div class="p-4 bg-red-50 rounded-lg border-r-4 border-red-500">
+                    <h3 class="font-bold text-lg text-red-800 mb-2">⚠️ نقاط تحتاج لتطوير</h3>
+                    <ul id="analysis-negative" class="list-disc list-inside space-y-1 text-red-700"></ul>
+                </div>
+                <div class="p-4 bg-yellow-50 rounded-lg border-r-4 border-yellow-500">
+                    <h3 class="font-bold text-lg text-yellow-800 mb-2">💡 خطة التحسين والتطوير</h3>
+                    <ul id="analysis-plan" class="list-disc list-inside space-y-1 text-yellow-700"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6">
+            <div class="card kpi-card border-blue-500">
+                <h3 class="text-gray-500 font-semibold">إجمالي العملاء</h3>
+                <p id="total-leads" class="text-4xl font-bold text-blue-600 mt-2">0</p>
+            </div>
+            <div class="card kpi-card border-green-500">
+                <h3 class="text-gray-500 font-semibold">عملاء فائزون (Won)</h3>
+                <p id="won-leads" class="text-4xl font-bold text-green-600 mt-2">0</p>
+            </div>
+            <div class="card kpi-card border-amber-500">
+                <h3 class="text-gray-500 font-semibold">عملاء قيد المتابعة</h3>
+                <p id="ongoing-leads" class="text-4xl font-bold text-amber-600 mt-2">0</p>
+            </div>
+            <div class="card kpi-card border-red-500">
+                <h3 class="text-gray-500 font-semibold">عملاء خاسرون</h3>
+                <p id="lost-leads" class="text-4xl font-bold text-red-600 mt-2">0</p>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="card lg:col-span-2">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">تحليل أداء الموظفين</h2>
+                <div class="table-container">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">الموظف</th>
+                                <th scope="col" class="px-6 py-3 w-1/3">عدد العملاء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employees-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">تحليل المشاريع</h2>
+                <div class="table-container">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">المشروع</th>
+                                <th scope="col" class="px-6 py-3">عدد العملاء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="projects-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">تحليل مصادر العملاء</h2>
+                <div class="chart-container"><canvas id="sourcesChart"></canvas></div>
+            </div>
+            <div class="card">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">التوزيع الجغرافي</h2>
+                <div class="chart-container"><canvas id="geoChart"></canvas></div>
+            </div>
+            <div class="card">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">تحليل اسباب خسارة العميل</h2>
+                <div class="chart-container"><canvas id="lossReasonChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Strategic Recommendations Section -->
+        <div id="strategic-recommendations-card" class="card mt-6">
+            <div class="flex items-center border-b pb-3 mb-4">
+                 <h2 class="text-2xl font-bold text-gray-800">توصيات ومؤشرات أداء استراتيجية</h2>
+            </div>
+           
+            <!-- Tabs Navigation -->
+            <div class="flex border-b mb-4">
+                <button data-target="tab-supervisor" class="tab-button active flex items-center p-4 font-semibold text-gray-600">
+                    <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    مشرف فريق المبيعات
+                </button>
+                <button data-target="tab-manager" class="tab-button flex items-center p-4 font-semibold text-gray-600">
+                    <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    مدير المبيعات
+                </button>
+                <button data-target="tab-campaigns" class="tab-button flex items-center p-4 font-semibold text-gray-600">
+                    <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-2.236 9.168-5.518"></path></svg>
+                    اخصائي الحملات
+                </button>
+                <button data-target="tab-crm" class="tab-button flex items-center p-4 font-semibold text-gray-600">
+                    <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                    مشرف CRM
+                </button>
+            </div>
+
+            <!-- Tabs Content -->
+            <div id="recommendations-content">
+                <!-- Content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA SIMULATION ENGINE ---
+        const finalReport = {
+            employees: [ { name: "Rahma Albarakati", clients: 2187 }, { name: "Hanadi Alabdulwahed", clients: 1842 }, { name: "Rozana Alharbi", clients: 1025 }, { name: "Haneen Aljehani", clients: 723 }, { name: "Fatima Al-Qahtani", clients: 315 }, { name: "Mohammed Alghamdi", clients: 287 }, { name: "Ahmed Almalki", clients: 198 }, { name: "Layla Harth", clients: 175 }, { name: "Sultan Alhattani", clients: 162 }, { name: "Khalid Alghamdi", clients: 158 }, { name: "Nora Alsulami", clients: 142 }, { name: "Ali Alzahrani", clients: 138 }, { name: "Maha Alotaibi", clients: 125 }, { name: "Yara Alharbi", clients: 118 }, { name: "Fahad Alqurashi", clients: 112 }, { name: "Lina Alghamdi", clients: 105 }, { name: "Omar Alsayed", clients: 98 }, { name: "Hessa Alali", clients: 92 }, { name: "Zayed Alotaibi", clients: 88 }, { name: "Reem Alshammari", clients: 85 }, { name: "Mosaad Alharbi", clients: 82 }, { name: "Abeer Alghamdi", clients: 78 }, { name: "Khalid Alzahrani", clients: 75 }, { name: "Amal Alotaibi", clients: 72 }, { name: "Sultan Alghamdi", clients: 68 }, { name: "Muneera Alharbi", clients: 65 }, { name: "Noura Alzahrani", clients: 62 }, { name: "Reda Menshawi", clients: 12 } ],
+            projects: [ { name: "مساب بريميوم", clients: 3128 }, { name: "مشروع مساب", clients: 2015 }, { name: "ديار افينيو", clients: 987 }, { name: "ربوة رزيدينس", clients: 512 }, { name: "ملحق مساب", clients: 200 }, { name: "مشروع النخيل", clients: 185 }, { name: "واحة الرياض", clients: 115 } ],
+            sources: [ { name: "سناب شات", clients: 3128 }, { name: "تيك توك", clients: 2562 }, { name: "مكالمات واردة", clients: 685 }, { name: "معارف شخصية", clients: 342 }, { name: "تسويق خارجي", clients: 125 }, { name: "إعلانات جوجل", clients: 115 }, { name: "البريد الإلكتروني", clients: 85 } ],
+            geo: [ { region: "جدة", clients: 2735 }, { region: "الرياض", clients: 2187 }, { region: "الشرقية", clients: 987 }, { region: "الجنوب", clients: 512 }, { region: "الشمال", clients: 342 }, { region: "مكة المكرمة", clients: 158 }, { region: "المدينة", clients: 125 }, { region: "القصيم", clients: 98 } ],
+            lossReasons: [ { reason: "طريقة الدفع", count: 987 }, { reason: "الموقع", count: 685 }, { reason: "الميزانية", count: 342 }, { reason: "التوقيت", count: 125 }, { reason: "متطلبات العميل", count: 48 } ],
+            statuses: ["On Going", "New", "Won", "Lost", "Unqualified", "Qualified"]
+        };
+
+        function createWeightedList(items, key) { const list = []; items.forEach(item => { for (let i = 0; i < item[key]; i++) { list.push(item.name || item.region || item.reason); } }); return list; }
+        const employeeList = createWeightedList(finalReport.employees, 'clients');
+        const projectList = createWeightedList(finalReport.projects, 'clients');
+        const sourceList = createWeightedList(finalReport.sources, 'clients');
+        const geoList = createWeightedList(finalReport.geo, 'clients');
+        const lossReasonList = createWeightedList(finalReport.lossReasons, 'count');
+        
+        let rawData = [];
+        function generateRawData() { const data = []; for (let i = 0; i < 6842; i++) { const status = finalReport.statuses[Math.floor(Math.random() * finalReport.statuses.length)]; let lossReason = null; if (status === 'Lost' || status === 'Unqualified') { lossReason = lossReasonList[Math.floor(Math.random() * lossReasonList.length)]; } data.push({ id: i, employee: employeeList[i], project: projectList[Math.floor(Math.random() * projectList.length)], source: sourceList[Math.floor(Math.random() * sourceList.length)], geo: geoList[Math.floor(Math.random() * geoList.length)], status: status, lossReason: lossReason }); } return data; }
+
+        // --- GLOBAL STATE & CHARTS ---
+        let charts = {};
+        Chart.register(ChartDataLabels);
+
+        // --- CHART CREATION ---
+        const createOrUpdateChart = (chartId, type, labels, data, label, options = {}) => {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            if (charts[chartId]) charts[chartId].destroy();
+            
+            const defaultOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        formatter: (value, context) => {
+                            const chartType = context.chart.config.type;
+                            if (chartType === 'pie' || chartType === 'doughnut') {
+                                const sum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                if (sum === 0 || value === 0) return '';
+                                return (value * 100 / sum).toFixed(0) + '%';
+                            }
+                            return value > 0 ? value.toLocaleString() : '';
+                        },
+                        color: (context) => (context.chart.config.type === 'pie' || context.chart.config.type === 'doughnut') ? '#fff' : '#334155',
+                        anchor: (context) => (context.chart.config.type === 'pie' || context.chart.config.type === 'doughnut') ? 'center' : 'end',
+                        align: (context) => (context.chart.config.type === 'pie' || context.chart.config.type === 'doughnut') ? 'center' : 'end',
+                        offset: 4,
+                        font: { weight: 'bold', family: 'Tajawal' }
+                    }
+                },
+                scales: (type === 'bar' || type === 'line') ? {
+                    x: { ticks: { font: { family: 'Tajawal' } }, grid: { display: false } },
+                    y: { ticks: { font: { family: 'Tajawal' } }, grid: { display: true, color: '#e2e8f0' } }
+                } : {},
+                indexAxis: type === 'horizontalBar' ? 'y' : 'x',
+            };
+
+            const baseColors = ['#2563eb', '#16a34a', '#9333ea', '#f97316', '#e11d48', '#f59e0b', '#6366f1', '#db2777'];
+            charts[chartId] = new Chart(ctx, {
+                type: type === 'horizontalBar' ? 'bar' : type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: Array.from({length: labels.length}, (_, i) => baseColors[i % baseColors.length]),
+                        borderRadius: 4,
+                        borderWidth: 0,
+                    }]
+                },
+                options: { ...defaultOptions, ...options }
+            });
+        };
+
+        // --- UI RENDERING FUNCTIONS ---
+        const renderTable = (tbodyId, data, max) => {
+            const tableBody = document.getElementById(tbodyId);
+            tableBody.innerHTML = '';
+            data.forEach(([name, count]) => {
+                const percentageOfMax = max > 0 ? (count / max) * 100 : 0;
+                const row = ` <tr class="bg-white border-b hover:bg-gray-50"> <td class="px-6 py-4 font-bold text-gray-700">${name}</td> <td class="px-6 py-4"> <div class="flex items-center justify-between"> <span class="font-bold text-gray-800">${count.toLocaleString()}</span> </div> <div class="progress-bar-container mt-1"> <div class="progress-bar bg-blue-500" style="width: ${percentageOfMax}%;"></div> </div> </td> </tr> `;
+                tableBody.innerHTML += row;
+            });
+        };
+
+        const generateEmployeeAnalysis = (employeeName, employeeData) => {
+            if (employeeData.length === 0) return { positive: [], negative: [], plan: [] };
+            
+            const countBy = (data, key) => data.reduce((acc, item) => { if(item[key]) { acc[item[key]] = (acc[item[key]] || 0) + 1; } return acc; }, {});
+            const getTopItem = (counts) => Object.keys(counts).length > 0 ? Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0] : "غير محدد";
+
+            const wonLeads = employeeData.filter(d => d.status === 'Won').length;
+            const lostLeads = employeeData.filter(d => d.status === 'Lost' || d.status === 'Unqualified').length;
+            const conversionRate = employeeData.length > 0 ? (wonLeads / employeeData.length) * 100 : 0;
+            const lossRate = employeeData.length > 0 ? (lostLeads / employeeData.length) * 100 : 0;
+            
+            const topProject = getTopItem(countBy(employeeData, 'project'));
+            const topSource = getTopItem(countBy(employeeData, 'source'));
+            const topLossReason = getTopItem(countBy(employeeData.filter(d => d.lossReason), 'lossReason'));
+
+            let positive = [
+                `يُظهر فعالية عالية في تحويل العملاء القادمين من حملات <strong>${topSource}</strong>.`,
+                `يُظهر كفاءة في التعامل مع <strong>${employeeData.length}</strong> عميل، مع تركيز واضح في <strong>${topProject}</strong>.`
+            ];
+            if (conversionRate > 15) {
+                positive.push(`معدل تحويل ممتاز يبلغ <strong>${conversionRate.toFixed(1)}%</strong>، مما يعكس مهارات جيدة في الإقناع وإتمام الصفقات.`);
+            }
+
+            let negative = [];
+            if (lossRate > 25) {
+                negative.push(`معدل خسارة مرتفع يبلغ <strong>${lossRate.toFixed(1)}%</strong>، وأبرز أسباب الخسارة هي "<strong>${topLossReason}</strong>".`);
+            } else {
+                 negative.push(`أبرز أسباب خسارة الصفقات لديه هي "<strong>${topLossReason}</strong>"، وهي نقطة يمكن تحسينها.`);
+            }
+            negative.push(`تظهر البيانات تركيزاً على التعامل مع عملاء <strong>${topSource}</strong>؛ يُنصح بتطوير المرونة للتعامل مع عملاء من حملات أخرى بنفس الكفاءة.`);
+
+            let plan = [
+                `<strong>خطة قصيرة المدى:</strong> حضور تدريب متخصص في <strong>مهارة معالجة الاعتراضات</strong>، مع التركيز على استراتيجيات التعامل مع اعتراض "<strong>${topLossReason}</strong>".`,
+                `<strong>خطة متوسطة المدى:</strong> تطوير المرونة في <strong>مهارة الاتصال البيعي</strong> للتعامل مع أنماط عملاء متنوعين قادمين من حملات مختلفة.`,
+            ];
+            if (conversionRate < 10) {
+                 plan.push(`<strong>توصية إضافية:</strong> التركيز على التدريب في مجال <strong>مهارة إتمام الصفقة</strong>، وتحديداً "فن قراءة مؤشرات الشراء" لترجمة الاهتمام إلى قرارات شراء فعلية.`);
+            }
+
+            return { positive, negative, plan };
+        };
+
+        // --- DASHBOARD UPDATE LOGIC ---
+        const updateDashboard = () => {
+            const employeeFilter = document.getElementById('salesperson-filter').value;
+            const projectFilter = document.getElementById('project-filter').value;
+            
+            // Conditional visibility for strategic recommendations
+            const strategicCard = document.getElementById('strategic-recommendations-card');
+            if (employeeFilter !== 'all' || projectFilter !== 'all') {
+                strategicCard.style.display = 'none';
+            } else {
+                strategicCard.style.display = 'block';
+            }
+
+            let filteredData = rawData;
+            if (employeeFilter !== 'all') filteredData = filteredData.filter(d => d.employee === employeeFilter);
+            if (projectFilter !== 'all') filteredData = filteredData.filter(d => d.project === projectFilter);
+            document.getElementById('total-leads').textContent = filteredData.length.toLocaleString();
+            document.getElementById('won-leads').textContent = filteredData.filter(d => d.status === 'Won').length.toLocaleString();
+            document.getElementById('ongoing-leads').textContent = filteredData.filter(d => d.status === 'On Going').length.toLocaleString();
+            document.getElementById('lost-leads').textContent = filteredData.filter(d => d.status === 'Lost' || d.status === 'Unqualified').length.toLocaleString();
+            const countBy = (data, key) => data.reduce((acc, item) => { acc[item[key]] = (acc[item[key]] || 0) + 1; return acc; }, {});
+            const employeeCounts = Object.entries(countBy(filteredData, 'employee')).sort((a, b) => b[1] - a[1]);
+            const projectCounts = Object.entries(countBy(filteredData, 'project')).sort((a, b) => b[1] - a[1]);
+            const maxEmployeeCount = employeeCounts.length > 0 ? employeeCounts[0][1] : 0;
+            const maxProjectCount = projectCounts.length > 0 ? projectCounts[0][1] : 0;
+            renderTable('employees-table-body', employeeCounts, maxEmployeeCount);
+            renderTable('projects-table-body', projectCounts, maxProjectCount);
+            
+            const sourceCounts = Object.entries(countBy(filteredData, 'source')).sort((a, b) => b[1] - a[1]);
+            createOrUpdateChart('sourcesChart', 'horizontalBar', sourceCounts.map(s => s[0]), sourceCounts.map(s => s[1]), 'مصادر العملاء');
+            
+            const geoCounts = Object.entries(countBy(filteredData, 'geo')).sort((a, b) => b[1] - a[1]);
+            createOrUpdateChart('geoChart', 'horizontalBar', geoCounts.map(g => g[0]), geoCounts.map(g => g[1]), 'التوزيع الجغرافي');
+            
+            const lossData = filteredData.filter(d => d.lossReason);
+            const lossReasonCounts = Object.entries(countBy(lossData, 'lossReason')).sort((a, b) => b[1] - a[1]);
+            createOrUpdateChart('lossReasonChart', 'horizontalBar', lossReasonCounts.map(l => l[0]), lossReasonCounts.map(l => l[1]), 'اسباب خسارة العميل');
+            
+            const analysisCard = document.getElementById('employee-analysis-card');
+            if (employeeFilter !== 'all') {
+                document.getElementById('analysis-employee-name').textContent = employeeFilter;
+                const analysis = generateEmployeeAnalysis(employeeFilter, filteredData);
+                document.getElementById('analysis-positive').innerHTML = analysis.positive.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('analysis-negative').innerHTML = analysis.negative.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('analysis-plan').innerHTML = analysis.plan.map(item => `<li>${item}</li>`).join('');
+                analysisCard.style.display = 'block';
+            } else {
+                analysisCard.style.display = 'none';
+            }
+        };
+        
+        // --- INITIALIZATION ---
+        const initializeDashboard = () => {
+            const startDate = new Date('2025-03-16');
+            const endDate = new Date('2025-07-31');
+            document.getElementById('summary-days').textContent = Math.ceil(Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24));
+            document.getElementById('summary-employees').textContent = finalReport.employees.length;
+            document.getElementById('summary-projects').textContent = finalReport.projects.length;
+            document.getElementById('summary-cities').textContent = finalReport.geo.length;
+            document.getElementById('summary-sources').textContent = finalReport.sources.length;
+            const employeeSelect = document.getElementById('salesperson-filter');
+            const projectSelect = document.getElementById('project-filter');
+            employeeSelect.innerHTML = '<option value="all">جميع الموظفين</option>';
+            finalReport.employees.forEach(emp => { employeeSelect.innerHTML += `<option value="${emp.name}">${emp.name}</option>`; });
+            projectSelect.innerHTML = '<option value="all">جميع المشاريع</option>';
+            finalReport.projects.forEach(proj => { projectSelect.innerHTML += `<option value="${proj.name}">${proj.name}</option>`; });
+            employeeSelect.onchange = updateDashboard;
+            projectSelect.onchange = updateDashboard;
+            
+            initializeRecommendationsTabs();
+
+            rawData = generateRawData();
+            updateDashboard();
+        };
+
+        const initializeRecommendationsTabs = () => {
+            const recommendationsData = [
+                { id: 'tab-supervisor', title: "1. لمشرف فريق المبيعات", focus: "الأداء اليومي للفريق، التدريب المباشر، تحقيق الأهداف قصيرة المدى.", kpis: [ "**أداء الموظفين الفردي:** متابعة عدد العملاء الذين يتعامل معهم كل موظف، ومعدل تحويله للعملاء الفائزين (Won).", "**أسباب الخسارة المتكررة:** ملاحظة أكثر أسباب الخسارة تكراراً لدى كل موظف ولدى الفريق ككل.", "**الالتزام بتحديث النظام:** التأكد من أن جميع الموظفين يقومون بتسجيل نتائج تواصلهم مع العملاء بدقة في نظام CRM." ], recommendations: [ "**جلسات تدريب فردية:** استخدم 'بطاقة تحليل الأداء' في التقرير كأساس لجلسات التدريب الفردية (One-on-One).", "**نقل المعرفة:** حدد الموظفين الأعلى أداءً واطلب منهم مشاركة أفضل الممارسات مع بقية الفريق.", "**ورش عمل مركزة:** إذا لاحظت أن 'طريقة الدفع' هي سبب الخسارة الأول، قم بتنظيم ورشة عمل حول 'مهارة معالجة الاعتراضات المالية'.", "**دعم الموظفين المتعثرين:** استخدم البيانات لتحديد الموظفين الذين لديهم معدلات خسارة عالية وقدم لهم دعماً إضافياً." ] },
+                { id: 'tab-manager', title: "2. لمدير المبيعات", focus: "الاستراتيجية العامة للمبيعات، توزيع الموارد، تحليل السوق، تحقيق الأهداف الربعية والسنوية.", kpis: [ "**أداء المشاريع:** مقارنة أعداد العملاء ونسب النجاح بين المشاريع المختلفة.", "**التوزيع الجغرافي:** تحليل المناطق الأعلى أداءً والمناطق التي تحتاج إلى تطوير.", "**فعالية مصادر العملاء:** تقييم العائد على الاستثمار من كل حملة تسويقية." ], recommendations: [ "**توزيع الموارد على المشاريع:** قم بتحليل أسباب نجاح المشاريع الكبرى وقرر ما إذا كنت ستزيد الاستثمار فيها أم ستطبق استراتيجياتها الناجحة على مشاريع أخرى.", "**الاستراتيجية الجغرافية:** قرر ما إذا كان يجب تعزيز الفرق في المدن الرئيسية أم إطلاق حملات مركزة لاختراق الأسواق الأقل أداءً.", "**تقييم الحملات التسويقية:** تعاون مع قسم التسويق لتحليل جودة العملاء القادمين من كل قناة.", "**تطوير الفريق:** بناءً على الأداء العام، فكر في إنشاء فرق متخصصة لكل مشروع أو منطقة جغرافية." ] },
+                { id: 'tab-campaigns', title: "3. لأخصائي الحملات المدفوعة", focus: "تحسين أداء الحملات الإعلانية، زيادة جودة العملاء المحتملين، تحقيق أفضل عائد على الإنفاق الإعلاني (ROAS).", kpis: [ "**حجم العملاء لكل مصدر:** تحديد القنوات التي تجلب أكبر عدد من العملاء.", "**جودة العملاء لكل مصدر:** تحليل أي المصادر يأتي منها العملاء الذين يتحولون إلى 'Won' بنسبة أعلى.", "**تكلفة العميل المحتمل (CPL):** مقارنة تكلفة جلب العميل من كل قناة." ], recommendations: [ "**تحسين الاستهداف:** استخدم البيانات لتحليل ديموغرافية الجمهور المتفاعل مع الحملات الناجحة واستخدمها لإنشاء حملات أكثر دقة.", "**تخصيص الرسالة الإعلانية:** لكل مشروع، قم بإنشاء رسائل إعلانية تتناسب مع المنصة الأكثر فعالية له.", "**التركيز على الجودة:** إذا كان لمصدر معين معدل تحويل عالٍ، فكر في زيادة الاستثمار فيه لجلب عملاء أكثر جدية.", "**اختبار قنوات جديدة:** خصص ميزانية صغيرة لاختبار منصات جديدة قد تكون مناسبة للمشاريع الأقل أداءً." ] },
+                { id: 'tab-crm', title: "4. لمشرف CRM ومحلل البيانات", focus: "دقة البيانات، كفاءة العمليات، توزيع العملاء، إعداد التقارير التحليلية.", kpis: [ "**اكتمال البيانات:** نسبة اكتمال الحقول الهامة (مثل سبب الخسارة) من قبل فريق المبيعات.", "**سرعة الاستجابة للعملاء:** قياس متوسط الوقت بين استلام العميل في النظام وأول تواصل يتم معه.", "**توزيع العملاء:** مراقبة توزيع العملاء على الموظفين والتأكد من عدالته وفعاليته." ], recommendations: [ "**ضمان جودة البيانات:** قم بإنشاء لوحات متابعة داخل نظام CRM لمراقبة جودة البيانات وعقد تدريبات دورية للفريق.", "**تحسين قواعد توزيع العملاء:** استخدم البيانات لتوجيه العملاء ذوي الجودة العالية إلى الموظفين الأعلى أداءً.", "**أتمتة التذكيرات والمتابعة:** قم بإعداد عمليات تلقائية في CRM لتذكير الموظفين بمتابعة العملاء.", "**تطوير التقارير:** اعمل مع الإدارة لتطوير تقارير جديدة تجيب على أسئلتهم الاستراتيجية." ] }
+            ];
+
+            const contentContainer = document.getElementById('recommendations-content');
+            contentContainer.innerHTML = ''; // Clear existing content
+
+            recommendationsData.forEach((item, index) => {
+                const kpisHtml = item.kpis.map(kpi => `<li>${kpi.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-800">$1</strong>')}</li>`).join('');
+                const recommendationsHtml = item.recommendations.map(rec => `<li>${rec.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-800">$1</strong>')}</li>`).join('');
+
+                const tabPane = `
+                    <div id="${item.id}" class="tab-pane p-4 ${index === 0 ? 'active' : ''}">
+                        <div class="mb-6">
+                            <h4 class="flex items-center font-bold text-lg text-gray-800 mb-2">
+                                <span class="text-2xl ml-2">🎯</span> التركيز
+                            </h4>
+                            <p class="text-gray-600">${item.focus}</p>
+                        </div>
+                        <div class="mb-6">
+                            <h4 class="flex items-center font-bold text-lg text-gray-800 mb-2">
+                                <span class="text-2xl ml-2">📊</span> مؤشرات رئيسية للمتابعة
+                            </h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">${kpisHtml}</ul>
+                        </div>
+                        <div>
+                            <h4 class="flex items-center font-bold text-lg text-gray-800 mb-2">
+                                <span class="text-2xl ml-2">💡</span> نصائح وتوصيات
+                            </h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">${recommendationsHtml}</ul>
+                        </div>
+                    </div>
+                `;
+                contentContainer.innerHTML += tabPane;
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const targetId = button.dataset.target;
+                    tabPanes.forEach(pane => {
+                        if (pane.id === targetId) {
+                            pane.classList.add('active');
+                        } else {
+                            pane.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', initializeDashboard);
+
+    </script>
+</body>
+</html>

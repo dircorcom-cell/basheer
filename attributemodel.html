@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اكتشف سماتك: نموذج CliftonStrengths</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Neutrals (Amber, Stone) -->
+    <!-- Application Structure Plan: تم إضافة زر "نسخ النتيجة" إلى قسم النتائج. 1. مقدمة. 2. مستكشف السمات (مع تلميحات). 3. اختبار تحديد السمات. 4. عرض النتائج (مع قائمة، تقرير نصي، زر إعادة، وزر نسخ جديد). -->
+    <!-- Visualization & Content Choices: 1. مستكشف السمات (HTML + JS Tooltip). 2. اختبار تحديد السمات (HTML/JS). 3. عرض النتائج (HTML/JS): إضافة زر "نسخ النتيجة". سيقوم JS بتجميع قائمة السمات والتقرير النصي في متغير نصي واحد، ثم يستخدم `document.execCommand('copy')` لنسخه إلى الحافظة. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            padding-bottom: 120px;
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-bottom: 90px;
+            }
+        }
+        
+        .theme-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .theme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #f59e0b;
+            background-color: #fffbeb;
+        }
+
+        .filter-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .filter-btn.active {
+            background-color: #d97706;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .answer-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .answer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #f59e0b;
+        }
+        
+        #theme-tooltip {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            max-width: 300px;
+            padding: 12px;
+            background-color: white;
+            border: 1px solid #e7e5e4;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            pointer-events: none;
+            transition: opacity 0.1s ease;
+            font-size: 0.9rem;
+        }
+        
+        #theme-tooltip-name {
+            font-weight: 700;
+            color: #d97706;
+            margin-bottom: 4px;
+        }
+        #theme-tooltip-domain {
+            font-weight: 600;
+            color: #78716c;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        #theme-tooltip-desc {
+            color: #44403c;
+            line-height: 1.5;
+        }
+        
+    </style>
+</head>
+<body class="bg-amber-50 text-stone-800">
+
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-5 text-center">
+            <h1 class="text-3xl font-bold text-amber-700">اكتشف سماتك: نموذج CliftonStrengths</h1>
+            <p class="text-lg text-stone-600 mt-1">أداة تفاعلية لاكتشاف نقاط القوة بناءً على نموذج جالوب</p>
+            <p class="text-sm text-stone-500 mt-2">تصميم وإعداد: د. بشير بن علي</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 space-y-12">
+
+        <section id="intro" class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-3">ما هو اختبار جالوب (CliftonStrengths)؟</h2>
+            <p class="text-stone-700 leading-relaxed">
+                هو أداة تقييم مصممة لمساعدة الأفراد على تحديد وفهم نقاط قوتهم الشخصية. يركز الاختبار على 34 سمة (أو "موهبة") إيجابية، ومن خلال الإجابة على سلسلة من الأسئلة، يحدد التقرير أقوى 5 سمات لديك. الفكرة هي أن التركيز على ما تجيده بطبيعتك وتطويره هو المسار الأسرع للنجاح والرضا، بدلاً من محاولة إصلاح نقاط ضعفك.
+            </p>
+        </section>
+
+        <section id="explorer" class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-semibold text-amber-700 mb-3">استكشف السمات الـ 34</h2>
+                <p class="text-stone-700 max-w-3xl mx-auto leading-relaxed">
+                    تنقسم السمات الـ 34 إلى أربعة مجالات رئيسية. استخدم الأزرار لفلترة السمات، أو <span class="font-semibold text-amber-700">مرر الفأرة فوق أي سمة</span> لقراءة شرحها فورًا.
+                </p>
+            </div>
+
+            <div id="filters" class="flex flex-wrap justify-center gap-3 p-4 bg-white rounded-lg shadow-md">
+                <button class="filter-btn active px-5 py-2 bg-amber-100 text-amber-800 font-semibold rounded-full hover:bg-amber-200" data-filter="all">عرض الكل (34)</button>
+                <button class="filter-btn px-5 py-2 bg-amber-100 text-amber-800 font-semibold rounded-full hover:bg-amber-200" data-filter="executing">التنفيذ (9)</button>
+                <button class="filter-btn px-5 py-2 bg-amber-100 text-amber-800 font-semibold rounded-full hover:bg-amber-200" data-filter="influencing">التأثير (8)</button>
+                <button class="filter-btn px-5 py-2 bg-amber-100 text-amber-800 font-semibold rounded-full hover:bg-amber-200" data-filter="relationship">بناء العلاقات (9)</button>
+                <button class="filter-btn px-5 py-2 bg-amber-100 text-amber-800 font-semibold rounded-full hover:bg-amber-200" data-filter="strategic">التفكير الاستراتيجي (8)</button>
+            </div>
+
+            <div id="themes-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Achiever" data-domain="executing" data-theme-name="المُنجِز (Achiever)" data-theme-domain="التنفيذ" data-theme-desc="لديك قدرة كبيرة على التحمل وتعمل بجد. تشعر بمتعة كبيرة في الانشغال والإنتاجية."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Arranger" data-domain="executing" data-theme-name="المُنظِّم (Arranger)" data-theme-domain="التنفيذ" data-theme-desc="تستطيع تنظيم الموارد والمهام المتعددة، وتحب إيجاد أفضل طريقة لإنجاز الأمور."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Belief" data-domain="executing" data-theme-name="الإيمان (Belief)" data-theme-domain="التنفيذ" data-theme-desc="لديك قيم أساسية معينة غير قابلة للتغيير. تمنحك هذه القيم معنى وهدفًا لحياتك."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Consistency" data-domain="executing" data-theme-name="الاتساق (Consistency)" data-theme-domain="التنفيذ" data-theme-desc="تؤمن بالعدالة والمساواة. تحب وضع قواعد واضحة وتطبيقها على الجميع."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Deliberative" data-domain="executing" data-theme-name="التأنّي (Deliberative)" data-theme-domain="التنفيذ" data-theme-desc="تأخذ حذرك في اتخاذ القرارات. تتوقع العقبات وتفكر فيها بعناية."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Discipline" data-domain="executing" data-theme-name="الانضباط (Discipline)" data-theme-domain="التنفيذ" data-theme-desc="تحب النظام والروتين. عالمك منظم ومخطط له."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Focus" data-domain="executing" data-theme-name="التركيز (Focus)" data-theme-domain="التنفيذ" data-theme-desc="تستطيع تحديد اتجاه واضح، والمتابعة فيه، وإجراء التصحيحات اللازمة للبقاء على المسار."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Responsibility" data-domain="executing" data-theme-name="المسؤولية (Responsibility)" data-theme-domain="التنفيذ" data-theme-desc="تأخذ ملكية نفسية لما تقول أنك ستفعله. تلتزم بالقيم الثابتة مثل الصدق والولاء."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Restorative" data-domain="executing" data-theme-name="المُصلِح (Restorative)" data-theme-domain="التنفيذ" data-theme-desc="تستمتع بحل المشكلات. تجيد اكتشاف الأخطاء وإيجاد الحلول لها."></div>
+
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Activator" data-domain="influencing" data-theme-name="المُبادِر (Activator)" data-theme-domain="التأثير" data-theme-desc="تحب تحويل الأفكار إلى أفعال. غالبًا ما تكون غير صبور وترغب في البدء فورًا."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Command" data-domain="influencing" data-theme-name="القيادة (Command)" data-theme-domain="التأثير" data-theme-desc="لديك حضور قوي. تستطيع تولي المسؤولية واتخاذ القرارات وإقناع الآخرين."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Communication" data-domain="influencing" data-theme-name="التواصل (Communication)" data-theme-domain="التأثير" data-theme-desc="تجيد التعبير عن أفكارك. تستطيع تحويل الأفكار المعقدة إلى قصص ورسائل واضحة."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Competition" data-domain="influencing" data-theme-name="المنافسة (Competition)" data-theme-domain="التأثير" data-theme-desc="تقيس تقدمك مقارنة بأداء الآخرين. تسعى جاهدًا للفوز وتحب التنافس."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Maximizer" data-domain="influencing" data-theme-name="التعظيم (Maximizer)" data-theme-domain="التأثير" data-theme-desc="تركز على نقاط القوة لتحفيز التميز. تسعى لتحويل شيء جيد إلى شيء رائع."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Self-Assurance" data-domain="influencing" data-theme-name="الثقة بالنفس (Self-Assurance)" data-theme-domain="التأثير" data-theme-desc="تشعر بالثقة في قدرتك على إدارة حياتك الخاصة. لديك بوصلة داخلية تمنحك الثقة."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Significance" data-domain="influencing" data-theme-name="الأهمية (Significance)" data-theme-domain="التأثير" data-theme-desc="تريد أن يكون لك تأثير كبير. مستقل وتريد أن يتم الاعتراف بك."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Woo" data-domain="influencing" data-theme-name="الجاذبية (Woo)" data-theme-domain="التأثير" data-theme-desc="تحب تحدي مقابلة أشخاص جدد وكسب ودهم. تستمد الطاقة من اللقاءات الاجتماعية."></div>
+
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Adaptability" data-domain="relationship" data-theme-name="التكيّف (Adaptability)" data-theme-domain="بناء العلاقات" data-theme-desc="تفضل "العيش في اللحظة". لا ترى المستقبل كوجهة ثابتة بل كخيار يتشكل."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Connectedness" data-domain="relationship" data-theme-name="الترابط (Connectedness)" data-theme-domain="بناء العلاقات" data-theme-desc="تؤمن بأن كل الأشياء مرتبطة. نادرًا ما تشعر بأنك معزول، فكلنا جزء من شيء أكبر."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Developer" data-domain="relationship" data-theme-name="المُطوِّر (Developer)" data-theme-domain="بناء العلاقات" data-theme-desc="ترى الإمكانات الكامنة في الآخرين. تستمتع برؤية الناس ينمون ويتطورون."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Empathy" data-domain="relationship" data-theme-name="التعاطف (Empathy)" data-theme-domain="بناء العلاقات" data-theme-desc="تستطيع الشعور بمشاعر الآخرين كما لو كانت مشاعرك الخاصة."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Harmony" data-domain="relationship" data-theme-name="الانسجام (Harmony)" data-theme-domain="بناء العلاقات" data-theme-desc="تبحث عن أرضية مشتركة وتوافق. لا تستمتع بالصراع وتفضل تقليله."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Includer" data-domain="relationship" data-theme-name="الاحتواء (Includer)" data-theme-domain="بناء العلاقات" data-theme-desc="تتقبل الآخرين وتسعى لإدماجهم في المجموعة. تكره رؤية أي شخص يشعر بأنه مستبعد."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Individualization" data-domain="relationship" data-theme-name="التفرّد (Individualization)" data-theme-domain="بناء العلاقات" data-theme-desc="تنبهر بالصفات الفريدة لكل شخص. تجيد اكتشاف كيف يمكن لأشخاص مختلفين العمل معًا."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Positivity" data-domain="relationship" data-theme-name="الإيجابية (Positivity)" data-theme-domain="بناء العلاقات" data-theme-desc="لديك حماس معدي. تنشر التفاؤل في كل موقف."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Relator" data-domain="relationship" data-theme-name="العلاقاتي (Relator)" data-theme-domain="بناء العلاقات" data-theme-desc="تستمتع بالعلاقات العميقة والوثيقة مع الآخرين. تجد متعة في العمل مع الأصدقاء."></div>
+
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Analytical" data-domain="strategic" data-theme-name="التحليلي (Analytical)" data-theme-domain="التفكير الاستراتيجي" data-theme-desc="تبحث عن الأسباب والعلل. لديك القدرة على التفكير في جميع العوامل التي قد تؤثر على الموقف."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Context" data-domain="strategic" data-theme-name="السياق (Context)" data-theme-domain="التفكير الاستراتيجي" data-theme-desc="تستمتع بالتفكير في الماضي. تفهم الحاضر من خلال دراسة تاريخه."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Futuristic" data-domain="strategic" data-theme-name="المستقبلي (Futuristic)" data-theme-domain="التفكير الاستراتيجي" data-theme-desc="تستلهم من المستقبل وما يمكن أن يكون. ترسم رؤى للمستقبل تلهم الآخرين."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Ideation" data-domain="strategic" data-theme-name="توليد الأفكار (Ideation)" data-theme-domain="التفكير الاستراتيجي" data-theme-desc="تنبهر بالأفكار. تستطيع إيجاد روابط بين ظواهر تبدو غير مترابطة."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Input" data-domain="strategic" data-theme-name="الإدخال (Input)" data-theme-domain="التفكير الاستراتيجي" data-theme-desc="لديك فضول كبير. تحب جمع المعلومات وتخزينها، سواء كانت أشياء أو أفكار."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Intellection" data-domain="strategic" data-theme-name="التفكير (Intellection)" data-theme-domain="التفكير الاستراتيجي" data-theme-desc="تتميز بالنشاط الفكري. تستمتع بالتأمل والتفكير العميق."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Learner" data-domain="strategic" data-theme-name="المتعلّم (Learner)" data-theme-domain="التفكير الاستراتيجي" data-theme-desc="لديك رغبة كبيرة في التعلم وترغب دائمًا في التحسن. تستمتع بعملية التعلم نفسها."></div>
+                <div class="theme-card p-4 bg-white rounded-lg shadow-sm cursor-pointer border border-transparent" data-theme-key="Strategic" data-domain="strategic" data-theme-name="الاستراتيجي (Strategic)" data-theme-domain="التفكير الاستراتيجي" data-theme-desc="تستطيع رؤية الأنماط والمسارات البديلة بسرعة. تجد دائمًا أفضل طريق للمضي قدمًا."></div>
+            </div>
+        </section>
+
+        <!-- Section 2: New Quiz -->
+        <section id="quiz" class="space-y-6 scroll-mt-8">
+            <div class="text-center">
+                <h2 class="text-2xl font-semibold text-amber-700 mb-3">اختبار تحديد السمات (تجريبي)</h2>
+                <p class="text-stone-700 max-w-3xl mx-auto leading-relaxed">
+                    هذا اختبار تجريبي يعتمد على أسلوب "الاختيار القسري" لمساعدتك في اكتشاف أقوى 5 سمات لديك.
+                    <br>
+                    <span class="font-semibold">التعليمات:</span> في كل سؤال، اختر العبارة التي تشعر أنها تمثلك بشكل أفضل. لا تفكر كثيرًا، اتبع حدسك الأول.
+                </p>
+            </div>
+            
+            <div id="quiz-container" class="bg-white p-6 mt-6 rounded-lg shadow-lg max-w-3xl mx-auto">
+                <div id="start-quiz-area" class="text-center">
+                    <button id="start-quiz-btn" class="px-8 py-3 bg-amber-600 text-white text-lg font-bold rounded-full hover:bg-amber-700 transition duration-200 shadow-lg">
+                        ابدأ الاختبار (15 سؤال)
+                    </button>
+                </div>
+                
+                <div id="question-area" class="hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <p id="question-counter" class="text-lg font-semibold text-stone-600">السؤال 1 من 15</p>
+                    </div>
+                    <div class="w-full bg-stone-200 rounded-full h-2.5">
+                        <div id="progress-bar" class="bg-amber-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    
+                    <p class="text-xl font-semibold text-center text-stone-800 pt-4">أي العبارات تصفك بشكل أفضل؟</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button id="answer-a-btn" class="answer-btn w-full p-6 bg-white border-2 border-stone-200 rounded-lg text-lg text-stone-700 hover:bg-amber-50 text-center">
+                        </button>
+                        <button id="answer-b-btn" class="answer-btn w-full p-6 bg-white border-2 border-stone-200 rounded-lg text-lg text-stone-700 hover:bg-amber-50 text-center">
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="quiz-results-container" class="hidden text-center space-y-4">
+                    <h3 class="text-2xl font-bold text-amber-700 mb-4">تقرير السمات الخاص بك (تجريبي)</h3>
+                    
+                    <h4 class="text-xl font-semibold text-stone-800">أقوى 5 سمات لديك:</h4>
+                    <ul id="quiz-results-list" class="flex flex-wrap justify-center gap-3">
+                    </ul>
+                    <p class="text-stone-600 pt-2 text-sm">مرر الفأرة فوق كل سمة لرؤية وصفها.</p>
+                    
+                    <div id="quiz-report-content" class="text-right p-4 bg-amber-50 rounded-lg mt-6 border border-amber-200 space-y-3">
+                    </div>
+                    
+                    <div class="flex flex-wrap justify-center items-center gap-4 mt-6">
+                        <button id="reset-quiz-btn" class="px-6 py-2 bg-stone-600 text-white font-bold rounded-full hover:bg-stone-700 transition duration-200 shadow-md">
+                            إعادة الاختبار
+                        </button>
+                        <button id="copy-results-btn" class="px-6 py-2 bg-amber-600 text-white font-bold rounded-full hover:bg-amber-700 transition duration-200 shadow-md">
+                            نسخ النتيجة
+                        </button>
+                    </div>
+                    <p id="copy-status-msg" class="text-green-600 h-4 mt-2"></p>
+                    
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="fixed bottom-0 left-0 right-0 z-50 bg-stone-800 text-stone-100 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <h4 class="text-lg font-bold text-white">تواصل معنا</h4>
+                <div class="flex flex-wrap justify-center sm:justify-end gap-x-4 gap-y-2">
+                    <a href="https://whatsapp.com/channel/0029VbAqVeHEQIauDsnamO2i" target="_blank" class="text-sm hover:text-amber-400 transition-colors">قناة أكاديمية المبيعات</a>
+                    <a href="https://whatsapp.com/channel/0029Vb5z65f7Noa18DSUnq13" target="_blank" class="text-sm hover:text-amber-400 transition-colors">قناة التسويق فكرة</a>
+                    <a href="https://wa.me/966537371592" target="_blank" class="text-sm hover:text-amber-400 transition-colors">عبر الواتساب</a>
+                    <a href="mailto:con4sultant@gmail.com" class="text-sm hover:text-amber-400 transition-colors">عبر البريد الالكتروني</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themesGrid = document.getElementById('themes-grid');
+            const themeCards = document.querySelectorAll('.theme-card');
+            const filtersContainer = document.getElementById('filters');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+
+            // --- Tooltip Creation ---
+            const tooltip = document.createElement('div');
+            tooltip.id = 'theme-tooltip';
+            tooltip.innerHTML = `
+                <div id="theme-tooltip-name"></div>
+                <div id="theme-tooltip-domain"></div>
+                <div id="theme-tooltip-desc"></div>
+            `;
+            document.body.appendChild(tooltip);
+            const tooltipName = document.getElementById('theme-tooltip-name');
+            const tooltipDomain = document.getElementById('theme-tooltip-domain');
+            const tooltipDesc = document.getElementById('theme-tooltip-desc');
+            
+            // --- Quiz Variables ---
+            const allThemes = [
+                "Achiever", "Arranger", "Belief", "Consistency", "Deliberative", "Discipline", "Focus", "Responsibility", "Restorative",
+                "Activator", "Command", "Communication", "Competition", "Maximizer", "Self-Assurance", "Significance", "Woo",
+                "Adaptability", "Connectedness", "Developer", "Empathy", "Harmony", "Includer", "Individualization", "Positivity", "Relator",
+                "Analytical", "Context", "Futuristic", "Ideation", "Input", "Intellection", "Learner", "Strategic"
+            ];
+            
+            const domainDescriptions = {
+                executing: "التنفيذ: أنت شخص يركز على إنجاز المهام. لديك دافع داخلي قوي لتحويل الأفكار إلى واقع ملموس وتتحمل المسؤولية لإتمام الأمور.",
+                influencing: "التأثير: أنت شخص يركز على إقناع الآخرين والتأثير فيهم. لديك موهبة طبيعية في التعبير عن الأفكار، وقيادة المجموعات، وضمان سماع صوتك.",
+                relationship: "بناء العلاقات: أنت 'الغراء' الذي يربط الفرق معًا. تركز بشكل طبيعي على بناء علاقات قوية وعميقة، ومساعدة الآخرين، وخلق بيئة داعمة.",
+                strategic: "التفكير الاستراتيجي: أنت شخص يركز على المستقبل وما 'يمكن أن يكون'. تستمتع بالتفكير العميق، وتحليل المعلومات، وتكوين الاستراتيجيات، ورؤية الأنماط التي قد لا يراها الآخرون."
+            };
+
+            const quizQuestions = [
+                { a: "أشعر بحاجة مستمرة للإنجاز والإنتاجية.", a_theme: "Achiever", b: "أنا مفتون بالأفكار الجديدة والمفاهيم.", b_theme: "Ideation" },
+                { a: "أنا دقيق وحذر، وأفكر في المخاطر أولاً.", a_theme: "Deliberative", b: "أنا غير صبور للبدء، وأحب تحويل الأفكار لأفعال.", b_theme: "Activator" },
+                { a: "أبحث عن الأسباب والعلل وأعتمد على البيانات.", a_theme: "Analytical", b: "أستطيع الشعور بما يشعر به الآخرون.", b_theme: "Empathy" },
+                { a: "أستمتع بمقابلة أشخاص جدد وكسب ودهم.", a_theme: "Woo", b: "أفضل العلاقات العميقة مع مجموعة صغيرة من الأصدقاء.", b_theme: "Relator" },
+                { a: "أرى الإمكانات الكامنة في الآخرين وأستمتع بمساعدتهم على النمو.", a_theme: "Developer", b: "أحب أن أكون مسؤولاً وأتخذ القرارات.", b_theme: "Command" },
+                { a: "ألتزم بقيمي الأساسية بقوة.", a_theme: "Belief", b: "أحب قياس أدائي مقارنة بالآخرين والفوز.", b_theme: "Competition" },
+                { a: "أجد دائماً أفضل طريق للمضي قدماً وأرى الأنماط بسهولة.", a_theme: "Strategic", b: "أستمتع بعملية التعلم نفسها، بغض النظر عن الموضوع.", b_theme: "Learner" },
+                { a: "ألتزم بوعودي وآخذ ملكية كاملة لمهامي.", a_theme: "Responsibility", b: "لدي حماس معدي وأبحث عن الجانب المشرق.", b_theme: "Positivity" },
+                { a: "أحب جمع وتخزين المعلومات والبيانات.", a_theme: "Input", b: "أحب تنظيم المهام والموارد لتحقيق أقصى قدر من الكفاءة.", b_theme: "Arranger" },
+                { a: "أنا مستقل وأريد أن يتم الاعتراف بإنجازاتي.", a_theme: "Significance", b: "أبحث عن التوافق والانسجام وأتجنب الصراع.", b_theme: "Harmony" },
+                { a: "أحب النظام والروتين، وعالمي منظم.", a_theme: "Discipline", b: "أفضل العيش في اللحظة والتكيف مع ما يحدث.", b_theme: "Adaptability" },
+                { a: "أستمتع بالتفكير في الماضي لفهم الحاضر.", a_theme: "Context", b: "أنا مصدر إلهام من المستقبل وما يمكن أن يكون.", b_theme: "Futuristic" },
+                { a: "أحب حل المشكلات وإعادة الأمور إلى مسارها الصحيح.", a_theme: "Restorative", b: "أجيد التعبير عن الأفكار وتحويلها إلى قصص واضحة.", b_theme: "Communication" },
+                { a: "أؤمن بالعدالة والمساواة ومعاملة الجميع بنفس الطريقة.", a_theme: "Consistency", b: "ألاحظ الصفات الفريدة لكل شخص وأحب تخصيص التعامل.", b_theme: "Individualization" },
+                { a: "أحب التركيز على نقاط القوة لتحويل الجيد إلى رائع.", a_theme: "Maximizer", b: "أشعر بالثقة في قراراتي وبوصلتي الداخلية.", b_theme: "Self-Assurance" }
+            ];
+            
+            let scores = {};
+            let currentQuestionIndex = 0;
+            const totalQuestions = quizQuestions.length;
+            let fullReportText = ""; // لتخزين النص للنسخ
+
+            const startQuizArea = document.getElementById('start-quiz-area');
+            const startQuizBtn = document.getElementById('start-quiz-btn');
+            const questionArea = document.getElementById('question-area');
+            const progressBar = document.getElementById('progress-bar');
+            const questionCounter = document.getElementById('question-counter');
+            const answerABtn = document.getElementById('answer-a-btn');
+            const answerBBtn = document.getElementById('answer-b-btn');
+            const quizResultsContainer = document.getElementById('quiz-results-container');
+            const quizResultsList = document.getElementById('quiz-results-list');
+            const quizReportContent = document.getElementById('quiz-report-content');
+            const resetQuizBtn = document.getElementById('reset-quiz-btn');
+            const copyResultsBtn = document.getElementById('copy-results-btn');
+            const copyStatusMsg = document.getElementById('copy-status-msg');
+
+            // --- Tooltip Functions ---
+            function showTooltip(e) {
+                const data = e.currentTarget.dataset;
+                tooltipName.textContent = data.themeName;
+                tooltipDomain.textContent = `المجال: ${data.themeDomain}`;
+                tooltipDesc.textContent = data.themeDesc;
+                
+                tooltip.style.display = 'block';
+                
+                let x = e.clientX + 10;
+                let y = e.clientY + 10;
+                
+                if (x + tooltip.offsetWidth + 20 > window.innerWidth) {
+                    x = e.clientX - tooltip.offsetWidth - 10;
+                }
+                if (y + tooltip.offsetHeight + 20 > window.innerHeight) {
+                    y = e.clientY - tooltip.offsetHeight - 10;
+                }
+                
+                tooltip.style.left = `${x}px`;
+                tooltip.style.top = `${y}px`;
+            }
+
+            function hideTooltip() {
+                tooltip.style.display = 'none';
+            }
+            
+            function trackMouse(e) {
+                if (tooltip.style.display === 'block') {
+                    let x = e.clientX + 10;
+                    let y = e.clientY + 10;
+                    
+                    if (x + tooltip.offsetWidth + 20 > window.innerWidth) {
+                        x = e.clientX - tooltip.offsetWidth - 10;
+                    }
+                    if (y + tooltip.offsetHeight + 20 > window.innerHeight) {
+                        y = e.clientY - tooltip.offsetHeight - 10;
+                    }
+                    
+                    tooltip.style.left = `${x}px`;
+                    tooltip.style.top = `${y}px`;
+                }
+            }
+            
+            document.addEventListener('mousemove', trackMouse);
+
+            // Populate card text and add listeners
+            themeCards.forEach(card => {
+                card.textContent = card.dataset.themeName;
+                card.addEventListener('mouseover', showTooltip);
+                card.addEventListener('mouseout', hideTooltip);
+            });
+
+            // Filter logic
+            filtersContainer.addEventListener('click', (e) => {
+                if (!e.target.matches('.filter-btn')) return;
+                const filter = e.target.dataset.filter;
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                themeCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.domain === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // --- New Quiz Functions ---
+            
+            function initializeScores() {
+                scores = {};
+                allThemes.forEach(theme => {
+                    scores[theme] = 0;
+                });
+                currentQuestionIndex = 0;
+            }
+            
+            function startQuiz() {
+                initializeScores();
+                startQuizArea.classList.add('hidden');
+                quizResultsContainer.classList.add('hidden');
+                questionArea.classList.remove('hidden');
+                fullReportText = "";
+                copyStatusMsg.textContent = "";
+                loadQuestion();
+            }
+
+            function loadQuestion() {
+                if (currentQuestionIndex >= totalQuestions) {
+                    showResults();
+                    return;
+                }
+                
+                const question = quizQuestions[currentQuestionIndex];
+                const progressPercent = ((currentQuestionIndex) / totalQuestions) * 100;
+                
+                progressBar.style.width = `${progressPercent}%`;
+                questionCounter.textContent = `السؤال ${currentQuestionIndex + 1} من ${totalQuestions}`;
+                
+                answerABtn.textContent = question.a;
+                answerABtn.dataset.theme = question.a_theme;
+                
+                answerBBtn.textContent = question.b;
+                answerBBtn.dataset.theme = question.b_theme;
+            }
+
+            function selectAnswer(e) {
+                const selectedTheme = e.currentTarget.dataset.theme;
+                if (scores[selectedTheme] !== undefined) {
+                    scores[selectedTheme]++;
+                }
+                
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+            
+            function getDominantDomains(top5) {
+                const domainCounts = { executing: 0, influencing: 0, relationship: 0, strategic: 0 };
+                let maxCount = 0;
+                
+                top5.forEach(([themeKey, score]) => {
+                    const themeCard = document.querySelector(`.theme-card[data-theme-key="${themeKey}"]`);
+                    if (themeCard) {
+                        const domain = themeCard.dataset.domain;
+                        domainCounts[domain]++;
+                        if (domainCounts[domain] > maxCount) {
+                            maxCount = domainCounts[domain];
+                        }
+                    }
+                });
+                
+                const dominantDomains = [];
+                for (const domain in domainCounts) {
+                    if (domainCounts[domain] === maxCount && maxCount > 0) {
+                        dominantDomains.push(domain);
+                    }
+                }
+                
+                const domainNames = {
+                    executing: "التنفيذ",
+                    influencing: "التأثير",
+                    relationship: "بناء العلاقات",
+                    strategic: "التفكير الاستراتيجي"
+                };
+                
+                if (dominantDomains.length === 0) return ["متوازن"];
+                
+                return dominantDomains.map(d => domainNames[d]);
+            }
+            
+            function generateResultReport(top5, dominantDomains) {
+                let reportHTML = `<h4 class="text-lg font-bold text-amber-700 mb-2">تحليل تقريرك:</h4>`;
+                
+                const dominantDomainsText = dominantDomains.join(" و ");
+                reportHTML += `<p><span class="font-semibold">النمط الغالب لديك هو:</span> ${dominantDomainsText}.</p>`;
+                
+                if (dominantDomains[0] !== "متوازن") {
+                    dominantDomains.forEach(domainName => {
+                        const domainKey = Object.keys(domainDescriptions).find(key => domainDescriptions[key].startsWith(domainName));
+                        if (domainKey) {
+                             reportHTML += `<p class="mt-2 text-sm text-stone-700">${domainDescriptions[domainKey]}</p>`;
+                        }
+                    });
+                }
+                
+                reportHTML += `<p class="mt-4 font-semibold">ملخص قوتك:</p>`;
+                if (dominantDomains.includes("التنفيذ")) {
+                     reportHTML += `<p class="mt-2 text-sm text-stone-700">أنت "مُحرّك"؛ شخص يدفع الأمور إلى الأمام. سماتك الخمس الأولى تمنحك طاقة لإنجاز المهام، وتحمل المسؤولية، وتنظيم الفوضى. أنت فعال وموثوق.</p>`;
+                } else if (dominantDomains.includes("التأثير")) {
+                    reportHTML += `<p class="mt-2 text-sm text-stone-700">أنت "صوت" مسموع؛ شخص يجذب الانتباه. سماتك الخمس الأولى تمنحك قدرة على الإقناع، والتواصل بفاعلية، وقيادة الآخرين نحو هدف. أنت مُلهم ومُحفز.</p>`;
+                } else if (dominantDomains.includes("بناء العلاقات")) {
+                     reportHTML += `<p class="mt-2 text-sm text-stone-700">أنت "قلب" الفريق؛ شخص يربط بين الناس. سماتك الخمس الأولى تمنحك قدرة طبيعية على فهم الآخرين، وبناء الثقة، وخلق بيئة عمل إيجابية ومتعاونة.</p>`;
+                } else if (dominantDomains.includes("التفكير الاستراتيجي")) {
+                     reportHTML += `<p class="mt-2 text-sm text-stone-700">أنت "عقل" مُدبر؛ شخص يرى الصورة الكبيرة. سماتك الخمس الأولى تمنحك قدرة على التحليل، والتعلم المستمر، والتخطيط للمستقبل. أنت مُبتكر وذو بصيرة.</p>`;
+                } else {
+                     reportHTML += `<p class="mt-2 text-sm text-stone-700">لديك ملف تعريف "متوازن"، حيث تمتد قوتك عبر مجالات متعددة. هذا يمنحك مرونة فريدة، مما يتيG لك التنفيذ بفاعلية والتفكير بعمق أو بناء العلاقات والتأثير في نفس الوقت.</p>`;
+                }
+                
+                reportHTML += `<p class="mt-4 text-xs text-stone-600">تذكر: هذا تحليل تجريبي. سماتك الخمس تعمل معًا بطريقة فريدة. انظر كيف تتداخل (المُنجِز) مع (المتعلم) أو كيف يدعم (التواصل) سمة (القيادة) لديك.</p>`;
+                
+                return reportHTML;
+            }
+
+            function showResults() {
+                questionArea.classList.add('hidden');
+                quizResultsContainer.classList.remove('hidden');
+                quizResultsList.innerHTML = '';
+                quizReportContent.innerHTML = '<li>جاري حساب تقريرك...</li>';
+
+                setTimeout(() => {
+                    const sortedScores = Object.entries(scores).sort(([,a],[,b]) => b-a);
+                    const top5 = sortedScores.slice(0, 5).filter(([,score]) => score > 0);
+                    
+                    if (top5.length === 0) {
+                        quizResultsList.innerHTML = '<li class="text-stone-600">لم يتم تحديد سمات. يرجى إعادة الاختبار.</li>';
+                        quizReportContent.innerHTML = '';
+                        fullReportText = "لم يتم تحديد سمات. يرجى إعادة الاختبار.";
+                        return;
+                    }
+
+                    const dominantDomains = getDominantDomains(top5);
+                    const reportHTML = generateResultReport(top5, dominantDomains);
+                    quizReportContent.innerHTML = reportHTML;
+
+                    quizResultsList.innerHTML = '';
+                    let top5Text = "أقوى 5 سمات لديك (نتيجة تجريبية):\n";
+
+                    top5.forEach(([themeKey, score], index) => {
+                        const themeCard = document.querySelector(`.theme-card[data-theme-key="${themeKey}"]`);
+                        if (themeCard) {
+                            const themeName = themeCard.dataset.themeName;
+                            const li = document.createElement('li');
+                            li.className = "quiz-result-link p-2 px-4 bg-amber-100 text-amber-800 font-semibold rounded-full shadow-sm border border-amber-200 cursor-default";
+                            li.textContent = themeName;
+                            
+                            li.dataset.themeKey = themeKey;
+                            li.dataset.themeName = themeName;
+                            li.dataset.themeDomain = themeCard.dataset.themeDomain;
+                            li.dataset.themeDesc = themeCard.dataset.themeDesc;
+                            
+                            li.addEventListener('mouseover', showTooltip);
+                            li.addEventListener('mouseout', hideTooltip);
+                            
+                            quizResultsList.appendChild(li);
+                            
+                            top5Text += `${index + 1}. ${themeName}\n`;
+                        }
+                    });
+                    
+                    const reportPlainText = quizReportContent.innerText;
+                    fullReportText = `${top5Text}\nتقريرك التفصيلي:\n${reportPlainText}`;
+                    copyStatusMsg.textContent = "";
+                    
+                    document.getElementById('quiz').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                }, 500); 
+            }
+            
+            startQuizBtn.addEventListener('click', startQuiz);
+            
+            resetQuizBtn.addEventListener('click', () => {
+                quizResultsContainer.classList.add('hidden');
+                startQuizArea.classList.remove('hidden');
+                fullReportText = "";
+                copyStatusMsg.textContent = "";
+            });
+            
+            answerABtn.addEventListener('click', selectAnswer);
+            answerBBtn.addEventListener('click', selectAnswer);
+            
+            copyResultsBtn.addEventListener('click', () => {
+                const textArea = document.createElement('textarea');
+                textArea.value = fullReportText;
+                
+                textArea.style.position = 'fixed';
+                textArea.style.top = '-9999px';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                
+                textArea.select();
+                textArea.setSelectionRange(0, 99999);
+                
+                try {
+                    document.execCommand('copy');
+                    copyStatusMsg.textContent = "تم نسخ النتيجة بنجاح!";
+                } catch (err) {
+                    copyStatusMsg.textContent = "فشل النسخ.";
+                    console.error('Copy failed', err);
+                }
+                
+                document.body.removeChild(textArea);
+                
+                setTimeout(() => {
+                    copyStatusMsg.textContent = "";
+                }, 3000);
+            });
+
+        });
+    </script>
+
+</body>
+</html>
+
